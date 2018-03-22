@@ -13,20 +13,9 @@
 
 ## 打包
 
-```shell
-    1. git clone https://github.com/itliusir/ms-base-common.git
-    2. 项目根目录下执行mvn clean install
-```
 
 ## 依赖层
 
-```xml
-    <dependency>
-        <groupId>com.itliusir.ms</groupId>
-        <artifactId>ms-base-common</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-```
 
 ## 条件查询Doc
 
@@ -105,7 +94,7 @@
     @Data
     @DynamicUpdate
     @DynamicInsert
-    public class TaskInfo extends BaseEntity implements Serializable {}
+    public class TaskInfo implements Serializable {}
 ```
 
 ## Dao层
@@ -120,21 +109,3 @@
     @Service
     public class TaskMgmentBiz extends BaseService<TaskInfoRepository,TaskInfo,Integer>{}
 ```
-
-## Hystrix
-
-```yaml
-    hystrix:
-        command:
-            default:
-                execution:
-                    isolation:
-                        thread:
-                            timeoutInMilliseconds: 20000 # Hystrix的超时时间是对次节点的请求时间的进行熔断
-                        strategy: THREAD
-        propagate:
-            request-attribute:
-                enabled: true # 开启Hystrix获取Request对象
-```
-
-**如对你有帮助，记得Star**
