@@ -1,4 +1,4 @@
-package com.xinyuan.ms.msg;
+package com.xinyuan.ms.web.resp;
 
 
 public class ObjectRestResponse<T> extends BaseResponse {

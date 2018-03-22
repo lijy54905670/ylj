@@ -43,7 +43,9 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
         T jpaResult = bizRepository.saveAndFlush(entity);
         entityManager.clear();  //清空一级缓存
         T result = null;
-        if (ReflectionUtils.hasField(jpaResult, "id")) {
+
+        String fieldName = "id";
+        if (ReflectionUtils.hasField(jpaResult, fieldName)) {
             ID id = (ID) ReflectionUtils.getFieldValue(jpaResult, "id");
             result = bizRepository.findOne(id);
         }
@@ -126,47 +128,44 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
      * @author 2018-03-13 16:04
      */
     private Specification getSpecification(List<SelectParam> selectParams, boolean isDelete) {
-        return new Specification<T>() {
-            @Override
-            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<Predicate>();
-                if (!isDelete) {
-                    predicates.add(criteriaBuilder.equal(root.get("deleted"), 0));
-                }
-                if (selectParams != null) {
-                    for (SelectParam s : selectParams) {
-                        switch (s.getCondition()) {
-                            case EQUAL:
-                                predicates.add(criteriaBuilder.equal(root.get(s.getParamKey()),
-                                        s.getParamValue()));
-                                break;
-                            case GREATERTHAN:
-                                predicates.add(criteriaBuilder.greaterThan(root.get(s.getParamKey()),
-                                        (Comparable) s.getParamValue()));
-                                break;
-                            case LESSTHAN:
-                                predicates.add(criteriaBuilder.lessThan(root.get(s.getParamKey()),
-                                        (Comparable) s.getParamValue()));
-                                break;
-                            case LIKE:
-                                predicates.add(criteriaBuilder.like(root.get(s.getParamKey()),
-                                        "%" + s.getParamValue() + "%"));
-                                break;
-                            case GREATERTHANEQUAL:
-                                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(s.getParamKey()),
-                                        (Comparable) s.getParamValue()));
-                                break;
-                            case LESSTHANEQUAL:
-                                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(s.getParamKey()),
-                                        (Comparable) s.getParamValue()));
-                                break;
-                            default:
-                                break;
-                        }
+        return (Specification<T>) (root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            if (!isDelete) {
+                predicates.add(criteriaBuilder.equal(root.get("deleted"), 0));
+            }
+            if (selectParams != null) {
+                for (SelectParam s : selectParams) {
+                    switch (s.getCondition()) {
+                        case EQUAL:
+                            predicates.add(criteriaBuilder.equal(root.get(s.getParamKey()),
+                                    s.getParamValue()));
+                            break;
+                        case GREATERTHAN:
+                            predicates.add(criteriaBuilder.greaterThan(root.get(s.getParamKey()),
+                                    (Comparable) s.getParamValue()));
+                            break;
+                        case LESSTHAN:
+                            predicates.add(criteriaBuilder.lessThan(root.get(s.getParamKey()),
+                                    (Comparable) s.getParamValue()));
+                            break;
+                        case LIKE:
+                            predicates.add(criteriaBuilder.like(root.get(s.getParamKey()),
+                                    "%" + s.getParamValue() + "%"));
+                            break;
+                        case GREATERTHANEQUAL:
+                            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(s.getParamKey()),
+                                    (Comparable) s.getParamValue()));
+                            break;
+                        case LESSTHANEQUAL:
+                            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(s.getParamKey()),
+                                    (Comparable) s.getParamValue()));
+                            break;
+                        default:
+                            break;
                     }
                 }
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
 }
