@@ -1,4 +1,4 @@
-package com.itliusir.ms.config;
+package com.xinyuan.ms.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Singleton bean...Do not request a bean from a BeanFactory in a destroy method implementation!
  * 可以加上该配置
  *
- * @author liugang
+ * @author
  * @since  2017-12-12 15:12:33
  */
 @Component

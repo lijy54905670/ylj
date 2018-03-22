@@ -1,6 +1,6 @@
-package com.itliusir.ms.util.log;
+package com.xinyuan.ms.util.log;
 
-import com.itliusir.ms.util.ClientUtil;
+import com.xinyuan.ms.util.ClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 /**
  * 使用AOP统一处理Web请求日志类
  *
- * @author liugang
+ * @author
  * @since 2017-11-15
  */
 @Aspect

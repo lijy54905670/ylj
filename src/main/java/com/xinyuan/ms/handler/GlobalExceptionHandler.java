@@ -1,7 +1,7 @@
-package com.itliusir.ms.handler;
+package com.xinyuan.ms.handler;
 
-import com.itliusir.ms.exception.BaseException;
-import com.itliusir.ms.msg.BaseResponse;
+import com.xinyuan.ms.exception.BaseException;
+import com.xinyuan.ms.msg.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 统一异常的处理
  *
- * @author liugang
+ * @author
  * @since 2018-03-07
  */
 @ControllerAdvice
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     /**
      * 参数校验产生的异常
      *
-     * @author liugang 2018-01-01 16:28
+     * @author  2018-01-01 16:28
      * */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public BaseResponse validExceptionHandler(HttpServletResponse response, MethodArgumentNotValidException ex) {

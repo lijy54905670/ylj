@@ -1,4 +1,4 @@
-package com.itliusir.ms.util;
+package com.xinyuan.ms.util;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * 实体类相关工具类
  *
- * @author liugang
+ * @author
  * @since 2018-03-06
  */
 public class EntityUtils {
@@ -33,7 +33,7 @@ public class EntityUtils {
     /**
      * 快速将bean的fcreateTime、flastEditTime、fcreatorId、flastEditorId附上相关值
      *
-     * @author liugang 2017-12-23 16:36
+     * @author  2017-12-23 16:36
      * */
     public static <T> void setBizCreatAndUpdatInfo(T entity) {
         setBizCreateInfo(entity);
@@ -43,7 +43,7 @@ public class EntityUtils {
     /**
      * 快速将bean的fcreateTime、fcreatorId附上相关值
      *
-     * @author liugang 2017-12-23 16:38
+     * @author  2017-12-23 16:38
      * */
     public static <T> void setBizCreateInfo(T entity){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -66,7 +66,7 @@ public class EntityUtils {
     /**
      * 快速将bean的flastEditTime、flastEditorId附上相关值
      *
-     * @author liugang 2017-12-23 16:46
+     * @author  2017-12-23 16:46
      * */
     public static <T> void setBizUpdatedInfo(T entity){
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
@@ -89,7 +89,7 @@ public class EntityUtils {
     /**
      * 快速将bean的fdeleteTime、fdeletorId附上相关值
      *
-     * @author liugang 2017-12-23 16:46
+     * @author  2017-12-23 16:46
      * */
     public static <T> void setBizLogicDeleteInfo(T entity){
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
@@ -136,7 +136,7 @@ public class EntityUtils {
     /**
      * 获取对象中为null的属性名
      *
-     * @author liugang 2018-03-08 13:45
+     * @author  2018-03-08 13:45
      * */
     public static String[] getNullPropertyNames(Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
@@ -156,7 +156,7 @@ public class EntityUtils {
     /**
      * 拷贝非空对象属性值
      *
-     * @author liugang 2018-03-08 13:46
+     * @author  2018-03-08 13:46
      * */
     public static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, getNullPropertyNames(source));

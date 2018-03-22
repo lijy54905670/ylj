@@ -1,4 +1,4 @@
-package com.itliusir.ms.msg;
+package com.xinyuan.ms.msg;
 
 public class BaseResponse {
     private int status = 200;

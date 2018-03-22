@@ -1,4 +1,4 @@
-package com.itliusir.ms.dao;
+package com.xinyuan.ms.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 基础Dao层(放一些通用方法)
  *
- * @author liugang
+ * @author
  * @since 2018-03-05
  */
 

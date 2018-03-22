@@ -1,4 +1,4 @@
-package com.itliusir.ms.util;
+package com.xinyuan.ms.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

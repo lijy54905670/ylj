@@ -1,8 +1,11 @@
-package com.itliusir.ms.entity;
+package com.xinyuan.ms.entity;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+/**
+ * @author liang
+ */
 public class PageBean implements Pageable {
 	/**
 	 * 当前页

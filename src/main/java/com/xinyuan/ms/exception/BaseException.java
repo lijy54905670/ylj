@@ -1,10 +1,10 @@
-package com.itliusir.ms.exception;
+package com.xinyuan.ms.exception;
 
 
 /**
  * 自定义异常
  *
- * @author liugang
+ * @author
  * @since 2018-03-07
  */
 public class BaseException extends RuntimeException {

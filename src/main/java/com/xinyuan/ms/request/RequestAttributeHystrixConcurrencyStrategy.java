@@ -1,4 +1,4 @@
-package com.itliusir.ms.request;
+package com.xinyuan.ms.request;
 
 import com.netflix.hystrix.HystrixThreadPoolKey;
 import com.netflix.hystrix.HystrixThreadPoolProperties;
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Hystrix传播ThreadLocal对象(隔离策略为THREAD时)
  *
- * @author liugang
+ * @author
  * @since 2018-01-16
  */
 //@Component

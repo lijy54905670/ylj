@@ -1,4 +1,4 @@
-package com.itliusir.ms.request;
+package com.xinyuan.ms.request;
 
 import com.netflix.hystrix.Hystrix;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * 实例化RequestAttributeHystrixConcurrencyStrategy
  * 增加配置开关
  *
- * @author liugang
+ * @author
  * @since 2018-01-16
  */
 @Configuration

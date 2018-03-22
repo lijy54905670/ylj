@@ -1,18 +1,18 @@
-package com.itliusir.ms.util;
+package com.xinyuan.ms.util;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * 客户端工具类
  *
- * @author liugang
+ * @author
  * @since 2018-03-06
  */
 public class ClientUtil {
 	/**
 	 * 获取客户端IP
 	 *
-	 * @author liugang 2018-03-18 20:24
+	 * @author  2018-03-18 20:24
 	 * */
 	public static String getClientIp(HttpServletRequest request){
 		String ip = request.getHeader("x-forwarded-for");

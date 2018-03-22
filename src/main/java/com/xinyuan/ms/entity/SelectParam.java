@@ -1,4 +1,4 @@
-package com.itliusir.ms.entity;
+package com.xinyuan.ms.entity;
 
 import lombok.Data;
 

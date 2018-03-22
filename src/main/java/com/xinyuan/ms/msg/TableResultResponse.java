@@ -1,4 +1,4 @@
-package com.itliusir.ms.msg;
+package com.xinyuan.ms.msg;
 
 import java.util.List;
 

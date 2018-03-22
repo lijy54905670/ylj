@@ -1,9 +1,9 @@
-package com.itliusir.ms.entity;
+package com.xinyuan.ms.entity;
 
 /**
  * 参数条件
  *
- * @author liugang
+ * @author
  * @since 2018-03-13
  */
 public enum ParamCondition {

@@ -1,11 +1,11 @@
-package com.itliusir.ms.request;
+package com.xinyuan.ms.request;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * 配置类
  *
- * @author liugang
+ * @author
  * @since 2018-01-16
  */
 @ConfigurationProperties("hystrix.propagate.request-attribute")
