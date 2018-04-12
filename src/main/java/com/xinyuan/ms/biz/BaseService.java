@@ -1,20 +1,20 @@
 package com.xinyuan.ms.biz;
 
+
 import com.xinyuan.ms.dao.BaseJpaRepository;
 import com.xinyuan.ms.entity.PageBean;
+import com.xinyuan.ms.entity.ParamCondition;
 import com.xinyuan.ms.entity.SelectParam;
 import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.util.EntityUtils;
 import com.xinyuan.ms.util.ReflectionUtils;
+import com.xinyuan.ms.web.req.Conditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,18 +85,27 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
     }
 
     /**
+     * 查询单个方法
+     *
+     * @author 2018-03-06 14:59
+     */
+    public T get(ID id) throws BaseException {
+        return bizRepository.findOne(id);
+    }
+
+    /**
      * 业务条件查询方法(带分页参数)
      *
      * @author 2018-03-08 9:17
      */
-    public Page findByCondition(String pageNum, String pageSize, List<SelectParam> selectParams) {
+    public Page findByCondition(Integer pageNum, Integer pageSize, List<SelectParam> selectParams) {
         int page = 1;
         int limit = 10;
         if (pageNum != null) {
-            page = Integer.parseInt(pageNum);
+            page = pageNum;
         }
         if (pageSize != null) {
-            limit = Integer.parseInt(pageSize);
+            limit = pageSize;
         }
 
         Specification querySpecifi = getSpecification(selectParams, false);
@@ -129,7 +138,7 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
      */
     private Specification getSpecification(List<SelectParam> selectParams, boolean isDelete) {
         return (Specification<T>) (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<Predicate>();
+            List<Predicate> predicates = new ArrayList<>();
             if (!isDelete) {
                 predicates.add(criteriaBuilder.equal(root.get("deleted"), 0));
             }
@@ -168,4 +177,45 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
+
+
+    /**
+     * 通用条件查询
+     *
+     * @param list
+     * @return
+     */
+    public List<SelectParam> getSelectParamList(ArrayList<Conditions> list) {
+        List<SelectParam> selectParamList = new ArrayList<>();
+        if (list != null) {
+            for (Conditions mapBean : list) {
+                ParamCondition paramCondition = null;
+                String condition = mapBean.getCondition();
+                switch (condition) {
+                    case "GREATERTHAN":
+                        paramCondition = ParamCondition.GREATERTHAN;
+                        break;
+                    case "LESSTHAN":
+                        paramCondition = ParamCondition.LESSTHAN;
+                        break;
+                    case "LIKE":
+                        paramCondition = ParamCondition.LIKE;
+                        break;
+                    case "GREATERTHANEQUAL":
+                        paramCondition = ParamCondition.GREATERTHANEQUAL;
+                        break;
+                    case "LESSTHANEQUAL":
+                        paramCondition = ParamCondition.LESSTHANEQUAL;
+                        break;
+                    default:
+                        paramCondition = ParamCondition.EQUAL;
+                        break;
+                }
+                SelectParam selectParam = new SelectParam(mapBean.getKey(), mapBean.getValue(), paramCondition);
+                selectParamList.add(selectParam);
+            }
+        }
+        return selectParamList;
+    }
+
 }

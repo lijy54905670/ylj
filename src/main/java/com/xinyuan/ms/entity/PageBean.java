@@ -29,6 +29,15 @@ public class PageBean implements Pageable {
 		this.sort = sort;
 	}
 
+
+	public PageBean(Integer pagenumber, Integer pagesize) {
+		this.pagenumber = pagenumber;
+		this.pagesize = pagesize;
+	}
+
+	public PageBean() {
+	}
+
 	public void setSort(Sort sort) {
 		this.sort = sort;
 	}

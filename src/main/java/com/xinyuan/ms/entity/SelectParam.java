@@ -17,5 +17,10 @@ public class SelectParam {
 	 * 参数类型
 	 */
 	private ParamCondition condition;
-	
+
+	public SelectParam(String paramKey, Object paramValue, ParamCondition condition) {
+		this.paramKey = paramKey;
+		this.paramValue = paramValue;
+		this.condition = condition;
+	}
 }
