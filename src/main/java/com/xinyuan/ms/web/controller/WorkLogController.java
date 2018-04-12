@@ -28,7 +28,7 @@ public class WorkLogController {
 
     @ApiOperation(value = "删除工作日志", notes = "根据id来指定删除工作日志")
     @ApiImplicitParam(name = "ids", value = "工作日志ID集合", required = true, dataType = "Long")
-    @RequestMapping(value = "/del", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntity<String> delWorkLog(@RequestBody List<Integer> ids) {
         try {
             for (Integer id : ids) {
@@ -56,7 +56,7 @@ public class WorkLogController {
 
     @ApiOperation(value = "id查询工作日志", notes = "根据url中id查询工作日志")
     @ApiImplicitParam(name = "id", value = "工作日志ID", required = true, dataType = "Long", paramType = "path")
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     public ResponseEntity<WorkLogVo> getWorkLogVo(@PathVariable(value = "id") Integer id) {
         WorkLogVo workLogVo = new WorkLogVo();
         try {
@@ -84,7 +84,7 @@ public class WorkLogController {
 
 
     @ApiOperation(value = "通用条件查询所有的工作日志【可分页】", notes = "通用条件查询所有的工作日志【可分页】")
-    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
     public ResponseEntity<Page<WorkLogVo>> getAllWorkLog(@RequestBody PageBody pageBody) {
         Page<WorkLogVo> page = null;
         try {
