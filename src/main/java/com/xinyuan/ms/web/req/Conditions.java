@@ -17,6 +17,6 @@ public class Conditions {
     @ApiModelProperty(value = "参数值(属性值)", name = "value" ,example = "5")
     private Object value;
 
-    @ApiModelProperty(value = "查询条件", name = "condition" ,example = "EQUAL")
+    @ApiModelProperty(value = "查询条件（EQUAL:等于 , GREATERTHAN:大于 , LESSTHAN:小于 , LIKE:模糊查询 , GREATERTHANEQUAL:大于等于 , LESSTHANEQUAL:小于等于）", name = "condition" ,example = "EQUAL")
     private String condition;
 }
