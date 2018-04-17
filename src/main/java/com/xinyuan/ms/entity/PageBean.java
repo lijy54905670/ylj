@@ -1,5 +1,6 @@
 package com.xinyuan.ms.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -10,16 +11,19 @@ public class PageBean implements Pageable {
 	/**
 	 * 当前页
 	 */
+	@ApiModelProperty(value = "当前页", name = "pagenumber", example = "1")
 	private Integer pagenumber = 1;
 
 	/**
 	 * 当前页面条数
 	 */
+	@ApiModelProperty(value = "当前页面条数", name = "pagesize", example = "2")
 	private Integer pagesize = 2;
 
 	/**
 	 * 排序条件
 	 */
+	@ApiModelProperty(value = "排序条件", name = "sort")
 	private Sort sort;
 
 	public PageBean(Integer pagenumber, Integer pagesize, Sort sort) {

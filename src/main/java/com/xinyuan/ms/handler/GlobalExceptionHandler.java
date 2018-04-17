@@ -1,10 +1,12 @@
 package com.xinyuan.ms.handler;
 
 import com.xinyuan.ms.exception.BaseException;
+import com.xinyuan.ms.exception.WorkLogException;
 import com.xinyuan.ms.web.resp.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,5 +55,18 @@ public class GlobalExceptionHandler {
         }
         logger.error(stringBuffer.toString());
         return new BaseResponse(HttpStatus.BAD_REQUEST.value(), stringBuffer.toString());
+    }
+
+
+    /**
+     * hzx
+     * @param response
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(WorkLogException.class)
+    public ResponseEntity<String> WorkLogExceptionHandler(HttpServletResponse response, WorkLogException ex) {
+        logger.error(ex.getMessage(), ex);
+        return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
     }
 }

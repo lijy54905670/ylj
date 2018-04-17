@@ -3,6 +3,7 @@ package com.xinyuan.ms.biz;
 
 import com.xinyuan.ms.dao.WorkLogRepository;
 import com.xinyuan.ms.entity.*;
+import com.xinyuan.ms.exception.WorkLogException;
 import com.xinyuan.ms.web.req.PageBody;
 import com.xinyuan.ms.web.vo.MissionVo;
 import com.xinyuan.ms.web.vo.PlanVo;
@@ -36,10 +37,12 @@ public class WorkLogService extends BaseService<WorkLogRepository, WorkLog, Inte
     @Autowired
     private MissionService missionService;
 
-    public WorkLog findOne(int id) {
-        return workLogRepository.findByIdAndDeleted(id, 0);
-    }
 
+    /**
+     * id查询工作日志
+     * @param id
+     * @return
+     */
     public WorkLogVo getWorkLogVo(int id) {
         WorkLog workLog = workLogRepository.findByIdAndDeleted(id, 0);
         WorkLogVo workLogVo = new WorkLogVo();
@@ -98,19 +101,6 @@ public class WorkLogService extends BaseService<WorkLogRepository, WorkLog, Inte
         return workLogVo;
 
     }
-
-    /**
-     * 异常处理name名字不存在的情况
-     *
-     * @param name
-     * @throws Exception
-     */
-   /* @Transactional(rollbackOn = Exception.class)
-    public void selectException(String name) {
-        if (workLogRepository.findByNameAndAndDeleted(name, 0).size() < 1) {
-            throw WorkLogException.WORK_LOG_NAME_REPEAT;
-        }
-    }*/
 
 
     /**
@@ -182,5 +172,20 @@ public class WorkLogService extends BaseService<WorkLogRepository, WorkLog, Inte
             page = findByPage(null, getSelectParamList(pageBody.getConditions()), false);
         }
         return page;
+    }
+
+
+
+    /**
+     * 异常处理name名字不存在的情况
+     *
+     * @param name
+     * @throws Exception
+     */
+    @Transactional(rollbackOn = Exception.class)
+    public void selectException(String name) {
+        if (workLogRepository.findByNameAndAndDeleted(name, 0).size() < 1) {
+            throw WorkLogException.WORK_LOG_NAME_REPEAT;
+        }
     }
 }
