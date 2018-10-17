@@ -5,7 +5,7 @@
 	<groupId>com.xinyuan.ms</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ms-base-common</artifactId>
+	<artifactId>baby</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -28,11 +28,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>1.8.5</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,21 +39,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -68,10 +51,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-websocket</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -81,20 +61,6 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-
-		<!--离线文档-->
-		<dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-mockmvc</artifactId>
-			<version>1.1.2.RELEASE</version>
-			<scope>test</scope>
-		</dependency>
-		<!--springfox-staticdocs 生成静态文档-->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-staticdocs</artifactId>
 			<version>2.6.1</version>
 		</dependency>
 
@@ -119,20 +85,6 @@
 			<version>1.2.41</version>
 		</dependency>
 
-		<!--分库分表用-->
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>sharding-jdbc-core</artifactId>
-			<version>${sharding-jdbc.version}</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.dangdang/sharding-jdbc-self-id-generator -->
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>sharding-jdbc-self-id-generator</artifactId>
-			<version>${sharding-jdbc.version}</version>
-		</dependency>
-
 
 		<!--数据库链接池-->
 		<dependency>
@@ -146,13 +98,6 @@
 			<version>2.6</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.4</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -160,18 +105,6 @@
 			<version>2.6</version>
 		</dependency>
 
-		<!--POI EXCEL-->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.9</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.9</version>
-		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 		<dependency>
@@ -179,31 +112,7 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.3</version>
 		</dependency>
-
 	</dependencies>
-
-	<licenses>
-		<license>
-			<name>The BSD 3-Clause License</name>
-			<url>https://opensource.org/licenses/BSD-3-Clause</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<!--WX Pay-->
-	<scm>
-		<url>https://github.com/wxpay/WXPay-SDK-Java</url>
-		<connection>git@github.com:wxpay/WXPay-SDK-Java.git</connection>
-		<developerConnection>https://github.com/wxpay/WXPay-SDK-Java</developerConnection>
-	</scm>
-
-	<developers>
-		<developer>
-			<name>wxpay</name>
-			<email>wxpay1888@foxmail.com</email>
-			<url>http://wxpay.github.io</url>
-		</developer>
-	</developers>
 
 	<build>
 		<finalName>SwaggerOfflineDoc</finalName>
@@ -212,49 +121,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<finalName>yirui_health</finalName>
+					<finalName>baby</finalName>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>1.5.3</version>
-				<!--文档生成配置-->
-				<configuration>
-					<sourceDirectory>${asciidoctor.input.directory}</sourceDirectory>
-					<sourceDocumentName>index.adoc</sourceDocumentName>
-					<attributes>
-						<doctype>book</doctype>
-						<toc>left</toc>
-						<toclevels>3</toclevels>
-						<numbered></numbered>
-						<hardbreaks></hardbreaks>
-						<sectlinks></sectlinks>
-						<sectanchors></sectanchors>
-						<generated>${generated.asciidoc.directory}</generated>
-					</attributes>
-				</configuration>
-				<!--因为每次执行只能处理一个后端，所以对于每个想要的输出类型，都是独立分开执行-->
-				<executions>
-					<!--html5-->
-					<execution>
-						<id>output-html</id>
-						<phase>test</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-						<configuration>
-							<backend>html5</backend>
-							<outputDirectory>${asciidoctor.html.output.directory}</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
