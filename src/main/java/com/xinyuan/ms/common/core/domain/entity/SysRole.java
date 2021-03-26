@@ -1,10 +1,11 @@
 package com.xinyuan.ms.common.core.domain.entity;
 
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.annotation.Excel.ColumnType;
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.xinyuan.ms.common.annotation.Excel;
+import com.xinyuan.ms.common.annotation.Excel.*;
+import com.xinyuan.ms.common.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
 
@@ -178,21 +179,5 @@ public class SysRole extends BaseEntity
         this.deptIds = deptIds;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("roleId", getRoleId())
-            .append("roleName", getRoleName())
-            .append("roleKey", getRoleKey())
-            .append("roleSort", getRoleSort())
-            .append("dataScope", getDataScope())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
-    }
+
 }

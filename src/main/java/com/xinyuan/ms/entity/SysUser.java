@@ -1,31 +1,37 @@
 package com.xinyuan.ms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xinyuan.ms.common.annotation.Excel;
 import com.xinyuan.ms.common.annotation.Excel.*;
-import com.xinyuan.ms.common.annotation.Excels;
-import com.xinyuan.ms.common.core.domain.entity.SysDept;
-import com.xinyuan.ms.common.core.domain.entity.SysRole;
-import com.xinyuan.ms.common.entity.BaseEntity;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.xinyuan.ms.common.core.domain.BaseEntity;
+import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * 用户对象 sys_user
  *
  * @author ruoyi
  */
-public class SysUser extends BaseEntity
+@Data
+@Entity
+@Table(name = "sys_user")
+public class SysUser
 {
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
 
@@ -34,10 +40,9 @@ public class SysUser extends BaseEntity
     private Long deptId;
 
     /** 部门父ID */
-    private Long parentId;
+//    private Long parentId;
 
-    /** 角色ID */
-    private Long roleId;
+
 
     /** 登录名称 */
     @Excel(name = "登录名称")
@@ -45,6 +50,7 @@ public class SysUser extends BaseEntity
 
     /** 用户名称 */
     @Excel(name = "用户名称")
+    @Column(name = "user_name")
     private String userName;
 
     /** 用户类型 */
@@ -86,23 +92,10 @@ public class SysUser extends BaseEntity
     @Excel(name = "最后登录时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
     private Date loginDate;
 
-    /** 密码最后更新时间 */
-    private Date pwdUpdateDate;
+    /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
-    /** 部门对象 */
-    @Excels({
-        @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
-        @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
-    })
-    private SysDept dept;
-
-    private List<SysRole> roles;
-
-    /** 角色组 */
-    private Long[] roleIds;
-
-    /** 岗位组 */
-    private Long[] postIds;
 
     public SysUser()
     {
@@ -144,25 +137,9 @@ public class SysUser extends BaseEntity
         this.deptId = deptId;
     }
 
-    public Long getParentId()
-    {
-        return parentId;
-    }
 
-    public void setParentId(Long parentId)
-    {
-        this.parentId = parentId;
-    }
 
-    public Long getRoleId()
-    {
-        return roleId;
-    }
 
-    public void setRoleId(Long roleId)
-    {
-        this.roleId = roleId;
-    }
 
     @NotBlank(message = "登录账号不能为空")
     @Size(min = 0, max = 30, message = "登录账号长度不能超过30个字符")
@@ -301,59 +278,9 @@ public class SysUser extends BaseEntity
         this.loginDate = loginDate;
     }
 
-    public Date getPwdUpdateDate()
-    {
-        return pwdUpdateDate;
-    }
 
-    public void setPwdUpdateDate(Date pwdUpdateDate)
-    {
-        this.pwdUpdateDate = pwdUpdateDate;
-    }
 
-    public SysDept getDept()
-    {
-        if (dept == null)
-        {
-            dept = new SysDept();
-        }
-        return dept;
-    }
 
-    public void setDept(SysDept dept)
-    {
-        this.dept = dept;
-    }
-
-    public List<SysRole> getRoles()
-    {
-        return roles;
-    }
-
-    public void setRoles(List<SysRole> roles)
-    {
-        this.roles = roles;
-    }
-
-    public Long[] getRoleIds()
-    {
-        return roleIds;
-    }
-
-    public void setRoleIds(Long[] roleIds)
-    {
-        this.roleIds = roleIds;
-    }
-
-    public Long[] getPostIds()
-    {
-        return postIds;
-    }
-
-    public void setPostIds(Long[] postIds)
-    {
-        this.postIds = postIds;
-    }
 
 
 }

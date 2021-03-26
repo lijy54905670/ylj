@@ -1,20 +1,32 @@
-package com.xinyuan.ms.common.core.domain.entity;
+package com.xinyuan.ms.entity;
 
-import com.ruoyi.common.core.domain.BaseEntity;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * 部门表 sys_dept
  *
  * @author ruoyi
  */
-public class SysDept extends BaseEntity
+
+@Data
+@Entity
+@Table(name = "sys_dept")
+public class SysDept
 {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     /** 部门ID */
     private Long deptId;
 
@@ -164,23 +176,5 @@ public class SysDept extends BaseEntity
         this.parentName = parentName;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("deptId", getDeptId())
-            .append("parentId", getParentId())
-            .append("ancestors", getAncestors())
-            .append("deptName", getDeptName())
-            .append("orderNum", getOrderNum())
-            .append("leader", getLeader())
-            .append("phone", getPhone())
-            .append("email", getEmail())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
-    }
+
 }

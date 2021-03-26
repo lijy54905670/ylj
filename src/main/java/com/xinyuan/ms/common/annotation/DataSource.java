@@ -1,6 +1,7 @@
 package com.xinyuan.ms.common.annotation;
 
-import com.ruoyi.common.enums.DataSourceType;
+
+import com.xinyuan.ms.common.enums.DataSourceType;
 
 import java.lang.annotation.*;
 

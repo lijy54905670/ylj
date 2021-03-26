@@ -1,24 +1,37 @@
 package com.xinyuan.ms.common.core.domain.entity;
 
 import com.xinyuan.ms.common.entity.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * 菜单权限表 sys_menu
  *
  * @author ruoyi
  */
+@Data
+@Entity
+@Table(name = "sys_menu")
 public class SysMenu extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 菜单ID */
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long menuId;
 
     /** 菜单名称 */
@@ -55,7 +68,7 @@ public class SysMenu extends BaseEntity
     private String icon;
 
     /** 子菜单 */
-    private List<SysMenu> children = new ArrayList<SysMenu>();
+
 
     public Long getMenuId()
     {
@@ -183,14 +196,5 @@ public class SysMenu extends BaseEntity
         this.icon = icon;
     }
 
-    public List<SysMenu> getChildren()
-    {
-        return children;
-    }
-
-    public void setChildren(List<SysMenu> children)
-    {
-        this.children = children;
-    }
 
 }
