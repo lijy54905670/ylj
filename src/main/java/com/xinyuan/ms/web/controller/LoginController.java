@@ -1,6 +1,7 @@
 package com.xinyuan.ms.web.controller;
 
 import com.xinyuan.ms.common.core.page.TableDataInfo;
+import com.xinyuan.ms.common.entity.AjaxResult;
 import com.xinyuan.ms.entity.SysDept;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.Ztree;
@@ -13,16 +14,16 @@ import com.xinyuan.ms.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.xinyuan.ms.common.entity.AjaxResult.error;
 
 @Controller
 public class LoginController extends BaseController{
@@ -85,7 +86,7 @@ public class LoginController extends BaseController{
         return "tree";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/system/user/add")
     public String add(ModelMap mmap)
     {
 //        mmap.put("roles", roleService.selectRoleAll().stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
@@ -93,4 +94,17 @@ public class LoginController extends BaseController{
         return "add";
     }
 
+    /**
+     * 添加用户
+     * */
+    @PostMapping("/system/user/add")
+    @ResponseBody
+    public AjaxResult addSave(@Validated SysUser user) {
+        if(1 != 1){
+            return error("新增用户'" + user.getLoginName() + "'失败，登录账号已存在");
+        }
+        user.setDelFlag("0");
+        sysUserService.save(user);
+        return toAjax(1);
+    }
 }
