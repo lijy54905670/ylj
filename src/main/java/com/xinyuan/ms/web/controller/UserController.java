@@ -1,65 +1,117 @@
 package com.xinyuan.ms.web.controller;
 
-import com.xinyuan.ms.common.util.ResultUtil;
-import com.xinyuan.ms.common.web.Message;
-import com.xinyuan.ms.common.web.PageBody;
-import com.xinyuan.ms.entity.User;
-import com.xinyuan.ms.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.xinyuan.ms.common.entity.AjaxResult;
+import com.xinyuan.ms.common.util.EntityUtils;
+import com.xinyuan.ms.entity.SysDept;
+import com.xinyuan.ms.entity.SysUser;
+import com.xinyuan.ms.service.impl.SysUserServiceImpl;
+import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static com.xinyuan.ms.common.entity.AjaxResult.error;
 
 /**
- * @Author: hzx
+ * 用户管理
  */
-@Api(description = "用户管理")
-@RestController
-@RequestMapping("/user")
-public class UserController {
+@Controller
+@RequestMapping("/system/user")
+public class UserController extends BaseController{
 
     @Autowired
-    private UserService userService;
+    SysUserServiceImpl iSysUserService;
 
-    @ApiOperation(value = "保存", notes = "保存")
-    @RequestMapping(value = "save", method = RequestMethod.POST)
-    public ResponseEntity<Message> save(@RequestBody User user) {
-        userService.save(user);
-        return ResponseEntity.ok(ResultUtil.success());
+    /**
+     * 跳转添加用户页面
+     * @param mmap
+     * @return
+     */
+    @GetMapping("/add")
+    public String add(ModelMap mmap)
+    {
+        return "add";
     }
 
-    @ApiOperation(value = "删除", notes = "删除")
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public ResponseEntity<Message> delete(@RequestBody List<Long> ids) {
-        userService.removeList(ids);
-        return ResponseEntity.ok(ResultUtil.success());
-    }
-
-    @ApiOperation(value = "更新", notes = "更新")
-    @RequestMapping(value = "update", method = RequestMethod.POST)
-    public ResponseEntity<Message> update(@RequestBody User user) {
-        userService.update(user);
-        return ResponseEntity.ok(ResultUtil.success());
-    }
-
-
-    @ApiOperation(value = "条件查询", notes = "条件查询")
-    @RequestMapping(value = "query", method = RequestMethod.POST)
-    public ResponseEntity<Page<User>> query(@RequestBody PageBody pageBody) {
-        Page<User> page = null;
-        try {
-            page = userService.query(pageBody);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
+    @PostMapping("/add")
+    @ResponseBody
+    public AjaxResult addSave(@Validated SysUser user) {
+        if(1 != 1){
+            return error("新增用户'" + user.getLoginName() + "'失败，登录账号已存在");
         }
-        return ResponseEntity.ok(page);
+        user.setDelFlag("0");
+        iSysUserService.save(user);
+        return toAjax(1);
+    }
+
+    /**
+     * 跳转修改用户页面
+     */
+    @GetMapping("/edit/{userId}")
+    public String edit(@PathVariable("userId") Long userId, ModelMap mmap)
+    {
+        SysUser sysUser = iSysUserService.selectUserByid(userId);
+        SysDept sysDept = iSysUserService.selectUserDept(sysUser.getDeptId());
+        SysUserVo sysUserVo = new SysUserVo();
+        EntityUtils.copyPropertiesIgnoreNull(sysUser,sysUserVo);
+        sysUserVo.setDept(sysDept);
+        mmap.put("user", sysUserVo);
+        return "user/edit1";
+    }
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(@Validated SysUser user)
+    {
+        iSysUserService.updateId(user);
+        return toAjax(1);
+    }
+
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
+    @PostMapping("/remove")
+    @ResponseBody
+    public AjaxResult remove(String ids)
+    {
+        int remove = iSysUserService.remove(ids);
+        return toAjax(remove);
+    }
+
+    /**
+     * 跳转重置密码页面
+     */
+    @GetMapping("/resetPwd/{userId}")
+    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap)
+    {
+        mmap.put("user",  iSysUserService.selectUserByid(userId));
+        return "user/resetPwd";
+    }
+
+    /**
+     * 重置密码
+     */
+    @PostMapping("/resetPwd")
+    @ResponseBody
+    public AjaxResult resetPwdSave(SysUser user){
+        user.setPassword(encryptPassword(user.getPassword()));
+        iSysUserService.updateId(user);
+        return success();
+
+//        return error();
     }
 }

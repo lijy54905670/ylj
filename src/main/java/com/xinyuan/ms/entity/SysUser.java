@@ -25,8 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity
 @Table(name = "sys_user")
-public class SysUser
-{
+public class SysUser {
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
@@ -41,8 +40,6 @@ public class SysUser
 
     /** 部门父ID */
 //    private Long parentId;
-
-
 
     /** 登录名称 */
     @Excel(name = "登录名称")

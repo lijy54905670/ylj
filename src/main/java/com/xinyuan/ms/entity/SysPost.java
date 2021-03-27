@@ -1,24 +1,32 @@
-package com.xinyuan.ms.common.core.domain.entity;
+package com.xinyuan.ms.entity;
 
 import com.xinyuan.ms.common.annotation.Excel;
 import com.xinyuan.ms.common.annotation.Excel.*;
 import com.xinyuan.ms.common.entity.BaseEntity;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * 岗位表 sys_post
  *
  * @author ruoyi
  */
-public class SysPost extends BaseEntity
+@Data
+@Entity
+@Table(name = "sys_post")
+public class SysPost
 {
     private static final long serialVersionUID = 1L;
 
     /** 岗位序号 */
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
     private Long postId;
 
@@ -38,8 +46,6 @@ public class SysPost extends BaseEntity
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
-    /** 用户是否存在此岗位标识 默认不存在 */
-    private boolean flag = false;
 
     public Long getPostId()
     {
@@ -94,16 +100,6 @@ public class SysPost extends BaseEntity
     public void setStatus(String status)
     {
         this.status = status;
-    }
-
-    public boolean isFlag()
-    {
-        return flag;
-    }
-
-    public void setFlag(boolean flag)
-    {
-        this.flag = flag;
     }
 
 

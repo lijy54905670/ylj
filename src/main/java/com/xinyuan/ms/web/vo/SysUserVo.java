@@ -5,7 +5,7 @@ import com.xinyuan.ms.common.annotation.Excel;
 import com.xinyuan.ms.common.annotation.Excel.*;
 import com.xinyuan.ms.common.annotation.Excels;
 import com.xinyuan.ms.common.core.domain.BaseEntity;
-import com.xinyuan.ms.common.core.domain.entity.SysRole;
+import com.xinyuan.ms.entity.SysRole;
 import com.xinyuan.ms.entity.SysDept;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;

@@ -2,6 +2,7 @@ package com.xinyuan.ms.web.controller;
 
 import com.xinyuan.ms.common.core.page.TableDataInfo;
 import com.xinyuan.ms.common.entity.AjaxResult;
+import com.xinyuan.ms.common.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
@@ -45,4 +46,24 @@ public class BaseController
     {
         return rows > 0 ? success() : error();
     }
+
+    /**
+     * 密码加密
+     * @param pwd
+     * @return
+     */
+    public String encryptPassword(String pwd){
+        String encryptPwd = MD5Util.MD5(pwd);
+        return encryptPwd;
+    }
+
+    /**
+     * 返回成功
+     */
+    public AjaxResult success()
+    {
+        return AjaxResult.success();
+    }
+
+
 }

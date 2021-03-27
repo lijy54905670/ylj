@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-	<th:block th:include="include1 :: header('新增用户')" />
+	<th:block th:include="include1 :: header('修改用户')" />
 	<th:block th:include="include1 :: select2-css" />
 </head>
 <body>
     <div class="main-content">
-        <form id="form-user-add" class="form-horizontal">
-            <input name="deptId" type="hidden" id="treeId"/>
+        <form class="form-horizontal" id="form-user-edit" th:object="${user}">
+            <input name="userId"  type="hidden"  th:field="*{userId}" />
+			<input name="deptId"  type="hidden"  th:field="*{deptId}" id="treeId"/>
             <h4 class="form-header h4">基本信息</h4>
             <div class="row">
             	<div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">用户名称：</label>
                         <div class="col-sm-8">
-                            <input name="userName" placeholder="请输入用户名称" class="form-control" type="text" maxlength="30" required>
+                            <input name="userName" placeholder="请输入用户名称" class="form-control" type="text" maxlength="30" th:field="*{userName}" required>
                         </div>
                     </div>
                 </div>
@@ -23,8 +24,8 @@
                         <label class="col-sm-4 control-label">归属部门：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                            	<input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control">
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input class="form-control" type="text" name="deptName" onclick="selectDeptTree()" id="treeName" th:field="*{dept.deptName}">
+                            	<span class="input-group-addon"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
                     </div>
@@ -36,7 +37,7 @@
                         <label class="col-sm-4 control-label">手机号码：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input id="phonenumber" name="phonenumber" placeholder="请输入手机号码" class="form-control" type="text" maxlength="11">
+                                <input name="phonenumber" placeholder="请输入手机号码" class="form-control" type="text" maxlength="11" th:field="*{phonenumber}">
                                 <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
                             </div>
                         </div>
@@ -47,7 +48,7 @@
                         <label class="col-sm-4 control-label">邮箱：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input id="email" name="email" class="form-control email" type="text" maxlength="50" placeholder="请输入邮箱">
+                                <input name="email" class="form-control email" type="text" maxlength="50" placeholder="请输入邮箱" th:field="*{email}">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                             </div>
                         </div>
@@ -59,57 +60,40 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label is-required">登录账号：</label>
                         <div class="col-sm-8">
-                            <input id="loginName" name="loginName" placeholder="请输入登录账号" class="form-control" type="text" maxlength="30" required>
+                            <input class="form-control" type="text" readonly="true" th:field="*{loginName}"/>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">登录密码：</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <input id="password" name="password" placeholder="请输入登录密码" class="form-control" type="password" required>
-                                <span class="input-group-addon" title="登录密码,鼠标按下显示密码"
-                                    onmousedown="$('#password').attr('type','text')"
-                                    onmouseup="$('#password').attr('type','password')"><i class="fa fa-key"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="col-sm-6">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-4 control-label">用户状态：</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <label class="toggle-switch switch-solid">-->
+<!--	                            <input type="checkbox" id="status" th:checked="${user.status == '0' ? true : false}">-->
+<!--	                            <span></span>-->
+<!--	                        </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">岗位：</label>
+                        <div class="col-sm-8">
+                            <select id="post" class="form-control select2-multiple" multiple>
+								<option th:each="post:${posts}" th:value="${post.postId}" th:text="${post.postName}" th:selected="${post.flag}" th:disabled="${post.status == '1'}"></option>
+							</select>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">用户性别：</label>
                         <div class="col-sm-8">
-                            <select name="sex" class="form-control m-b">
-				                <option  th:text="男" th:value="1"></option>
-                                <option  th:text="女" th:value="2"></option>
-                                <option  th:text="未知" th:value="3"></option>
+                            <select name="sex" class="form-control m-b" >
+				                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{sex}"></option>
 				            </select>
-                        </div>
-                    </div>
-                </div>
-               <!-- <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">用户状态：</label>
-                        <div class="col-sm-8">
-                            <label class="toggle-switch switch-solid">
-	                            <input type="checkbox" id="status" checked>
-	                            <span></span>
-	                        </label>
-                        </div>
-                    </div>
-                </div>-->
-            </div>
-            <div class="row">
-            	<div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">岗位：</label>
-                        <div class="col-xs-4">
-                            <select id="post" class="form-control select2-multiple" multiple>
-<!--								<option th:each="post:${posts}" th:value="${post.postId}" th:text="${post.postName}" th:disabled="${post.status == '1'}"></option>-->
-							</select>
                         </div>
                     </div>
                 </div>
@@ -119,27 +103,15 @@
 <!--                    <div class="form-group">-->
 <!--                        <label class="col-xs-2 control-label">角色：</label>-->
 <!--                        <div class="col-xs-10">-->
-<!--&lt;!&ndash;                            <label th:each="role:${roles}" class="check-box">&ndash;&gt;-->
-<!--&lt;!&ndash;								<input name="role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}" th:disabled="${role.status == '1'}">&ndash;&gt;-->
-<!--&lt;!&ndash;							</label>&ndash;&gt;-->
+<!--                            <label th:each="role:${roles}" class="check-box">-->
+<!--								<input name="role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}" th:checked="${role.flag}" th:disabled="${role.status == '1'}">-->
+<!--							</label>-->
 <!--                        </div>-->
 <!--                    </div>-->
 <!--                </div>-->
 <!--            </div>-->
-            <h4 class="form-header h4">其他信息</h4>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">备注：</label>
-                        <div class="col-xs-10">
-                            <textarea name="remark" maxlength="500" class="form-control" rows="3"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </form>
     </div>
-
     <div class="row">
         <div class="col-sm-offset-5 col-sm-10">
             <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
@@ -148,37 +120,12 @@
     </div>
 	<th:block th:include="include1 :: footer" />
 	<th:block th:include="include1 :: select2-js" />
-	<script>
-        function haha(){
-            console.log("haha")
-        }
+	<script type="text/javascript">
+        var prefix = ctx + "system/user";
 
-	    var prefix = ctx + "system/user";
-
-        // $("#form-user-add").validate({
+        // $("#form-user-edit").validate({
         // 	onkeyup: false,
         // 	rules:{
-        // 		loginName:{
-        // 			minlength: 2,
-        // 			maxlength: 20,
-        // 			remote: {
-        //                 url: prefix + "/checkLoginNameUnique",
-        //                 type: "post",
-        //                 dataType: "json",
-        //                 data: {
-        //                 	"loginName": function() {
-        //                         return $.common.trim($("#loginName").val());
-        //                     }
-        //                 },
-        //                 dataFilter: function(data, type) {
-        //                 	return $.validate.unique(data);
-        //                 }
-        //             }
-        // 		},
-        // 		password:{
-        // 			minlength: 5,
-        // 			maxlength: 20
-        // 		},
         // 		email:{
         //             email:true,
         //             remote: {
@@ -186,7 +133,10 @@
         //                 type: "post",
         //                 dataType: "json",
         //                 data: {
-        //                     "email": function () {
+        //                 	"userId": function() {
+        //                         return $("#userId").val();
+        //                     },
+        //         			"email": function() {
         //                         return $.common.trim($("#email").val());
         //                     }
         //                 },
@@ -202,7 +152,10 @@
         //                 type: "post",
         //                 dataType: "json",
         //                 data: {
-        //                     "phonenumber": function () {
+        //                 	"userId": function() {
+        //                 		return $("#userId").val();
+        //                     },
+        //         			"phonenumber": function() {
         //                         return $.common.trim($("#phonenumber").val());
         //                     }
         //                 },
@@ -213,9 +166,6 @@
         // 		},
         // 	},
         // 	messages: {
-        //         "loginName": {
-        //             remote: "用户已经存在"
-        //         },
         // 		"email": {
         //             remote: "Email已经存在"
         //         },
@@ -227,27 +177,23 @@
         // });
 
         function submitHandler() {
-            console.log("新增")
-        	var chrtype = 5;
-			var password = $("#password").val();
-	        if ($.validate.form() && checkpwd(chrtype, password)) {
-	        	var data = $("#form-user-add").serializeArray();
+	        if ($.validate.form()) {
+	        	var data = $("#form-user-edit").serializeArray();
 	        	var status = $("input[id='status']").is(':checked') == true ? 0 : 1;
 	        	var roleIds = $.form.selectCheckeds("role");
 	        	var postIds = $.form.selectSelects("post");
 	        	data.push({"name": "status", "value": status});
 	        	data.push({"name": "roleIds", "value": roleIds});
 	        	data.push({"name": "postIds", "value": postIds});
-	        	$.operate.saveTab(prefix + "/add", data);
+	        	$.operate.saveTab(prefix + "/edit", data);
 	        }
 	    }
 
-        /* 用户管理-新增-选择部门树 */
+        /* 用户管理-修改-选择部门树 */
         function selectDeptTree() {
-        	var treeId = $("#treeId").val();
-        	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        	var url = ctx + "system/dept/selectDeptTree/" + deptId;
-			var options = {
+        	var deptId = $.common.isEmpty($("#treeId").val()) ? "100" : $("#treeId").val();
+            var url = ctx + "system/dept/selectDeptTree/" + deptId;
+		    var options = {
 				title: '选择部门',
 				width: "380",
 				url: url,
@@ -258,7 +204,7 @@
 
 		function doSubmit(index, layero){
 			var tree = layero.find("iframe")[0].contentWindow.$._tree;
-			var body = layer.getChildFrame('body', index);
+   			var body = layer.getChildFrame('body', index);
    			$("#treeId").val(body.find('#treeId').val());
    			$("#treeName").val(body.find('#treeName').val());
    			layer.close(index);
@@ -270,6 +216,6 @@
                 allowClear: true
             });
         })
-     </script>
+    </script>
 </body>
 </html>

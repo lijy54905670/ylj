@@ -1,35 +1,26 @@
 package com.xinyuan.ms.web.controller;
 
 import com.xinyuan.ms.common.core.page.TableDataInfo;
-import com.xinyuan.ms.common.entity.AjaxResult;
-import com.xinyuan.ms.entity.SysDept;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.DeptServiceImpl;
+import com.xinyuan.ms.service.impl.SysMenuServiceImpl;
 import com.xinyuan.ms.service.impl.SysUserServiceImpl;
 import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.ui.Model;
 import com.xinyuan.ms.common.core.domain.entity.SysMenu;
-import com.xinyuan.ms.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.xinyuan.ms.common.entity.AjaxResult.error;
 
 @Controller
 public class LoginController extends BaseController{
 
     @Autowired
-    ISysMenuService iSysMenuService;
+    SysMenuServiceImpl iSysMenuService;
 
     @Autowired
     SysUserServiceImpl sysUserService;
@@ -37,12 +28,20 @@ public class LoginController extends BaseController{
     @Autowired
     DeptServiceImpl deptService;
 
-
+    /**
+     * 跳转登录页面
+     * @return
+     */
     @RequestMapping("/login1")
     public String loign1(){
         return "login";
     }
 
+    /**
+     * 跳转index页面
+     * @param model
+     * @return
+     */
     @RequestMapping("/index")
     public String index(Model model){
         List<SysMenu> menus = iSysMenuService.selectMenuAll(1l);
@@ -56,11 +55,20 @@ public class LoginController extends BaseController{
         return "hello";
     }
 
+    /**
+     * 跳转user.html页面
+     * @return
+     */
     @RequestMapping("/system/user")
     public String userList(){
-        return "user";
+        return "user/user";
     }
 
+    /**
+     * 根据部门id查询用户
+     * @param user
+     * @return
+     */
     @RequestMapping("/system/user/list")
     @ResponseBody
     public TableDataInfo userListInfo(SysUser user){
@@ -68,6 +76,10 @@ public class LoginController extends BaseController{
         return getDataTable(list);
     }
 
+    /**
+     * 获取左侧部门树
+     * @return
+     */
     @GetMapping("system/dept/treeData")
     @ResponseBody
     public List<Ztree> treeData()
@@ -77,7 +89,14 @@ public class LoginController extends BaseController{
     }
 
 
-    @GetMapping(value = { "/selectDeptTree/{deptId}", "/selectDeptTree/{deptId}/{excludeId}" })
+    /**
+     * 查询部门树
+     * @param deptId
+     * @param excludeId
+     * @param mmap
+     * @return
+     */
+    @GetMapping(value = { "/system/dept/selectDeptTree/{deptId}", "/system/dept/selectDeptTree/{deptId}/{excludeId}" })
     public String selectDeptTree(@PathVariable("deptId") Long deptId,
                                  @PathVariable(value = "excludeId", required = false) String excludeId, ModelMap mmap)
     {
@@ -86,25 +105,6 @@ public class LoginController extends BaseController{
         return "tree";
     }
 
-    @GetMapping("/system/user/add")
-    public String add(ModelMap mmap)
-    {
-//        mmap.put("roles", roleService.selectRoleAll().stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-//        mmap.put("posts", postService.selectPostAll());
-        return "add";
-    }
 
-    /**
-     * 添加用户
-     * */
-    @PostMapping("/system/user/add")
-    @ResponseBody
-    public AjaxResult addSave(@Validated SysUser user) {
-        if(1 != 1){
-            return error("新增用户'" + user.getLoginName() + "'失败，登录账号已存在");
-        }
-        user.setDelFlag("0");
-        sysUserService.save(user);
-        return toAjax(1);
-    }
+
 }

@@ -24,6 +24,10 @@ public class DeptServiceImpl extends BaseService<DeptRepository, SysDept,Long> {
         return sysDept;
     }
 
+    public List selectDeptLists(){
+        return bizRepository.selectDeptLists();
+    }
+
 
     /**
      * 对象转部门树

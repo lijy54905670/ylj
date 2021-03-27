@@ -1,5 +1,6 @@
 package com.xinyuan.ms.service;
 
+import com.xinyuan.ms.common.constant.UserConstants;
 import com.xinyuan.ms.common.service.Order;
 import com.xinyuan.ms.common.service.PageBean;
 import com.xinyuan.ms.common.service.ParamCondition;
@@ -10,6 +11,8 @@ import com.xinyuan.ms.common.util.ResultUtil;
 import com.xinyuan.ms.common.web.Conditions;
 import com.xinyuan.ms.common.web.Message;
 import com.xinyuan.ms.common.web.PageBody;
+import com.xinyuan.ms.entity.SysDept;
+import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.mapper.BaseJpaRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -102,6 +105,17 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
         T result = null;
         if (ReflectionUtils.hasField(entity, "id")) {
             ID id = (ID) ReflectionUtils.getFieldValue(entity, "id");
+            result = bizRepository.findOne(id);
+        }
+        EntityUtils.copyPropertiesIgnoreNull(entity, result);
+        bizRepository.saveAndFlush(result);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateId(T entity) throws BaseException {
+        T result = null;
+        if (ReflectionUtils.hasField(entity, "userId")) {
+            ID id = (ID) ReflectionUtils.getFieldValue(entity, "userId");
             result = bizRepository.findOne(id);
         }
         EntityUtils.copyPropertiesIgnoreNull(entity, result);

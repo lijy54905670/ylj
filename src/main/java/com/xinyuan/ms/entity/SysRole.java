@@ -1,25 +1,39 @@
-package com.xinyuan.ms.common.core.domain.entity;
+package com.xinyuan.ms.entity;
 
+import com.sun.javafx.beans.IDProperty;
 import com.xinyuan.ms.common.annotation.Excel;
 import com.xinyuan.ms.common.annotation.Excel.*;
 import com.xinyuan.ms.common.entity.BaseEntity;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * 角色表 sys_role
  *
  * @author ruoyi
  */
-public class SysRole extends BaseEntity
+
+@Data
+@Entity
+@Table(name = "sys_role")
+public class SysRole
 {
     private static final long serialVersionUID = 1L;
 
     /** 角色ID */
     @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long roleId;
 
     /** 角色名称 */

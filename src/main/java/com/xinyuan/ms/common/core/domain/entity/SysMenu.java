@@ -1,20 +1,13 @@
 package com.xinyuan.ms.common.core.domain.entity;
 
 import com.xinyuan.ms.common.entity.BaseEntity;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**

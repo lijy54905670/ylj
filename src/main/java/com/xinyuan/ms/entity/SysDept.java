@@ -1,15 +1,12 @@
 package com.xinyuan.ms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-
+import java.util.Date;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -57,8 +54,48 @@ public class SysDept
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    /** 父部门名称 */
-    private String parentName;
+    /** 创建者 */
+    @Column(name = "create_by")
+    private String createBy;
+
+    /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "create_time")
+    private Date createTime;
+
+
+//    /** 更新时间 */
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @Column(name = "update_time")
+//    private Date updateTime;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+//    public Date getUpdateTime() {
+//        return updateTime;
+//    }
+//
+//    public void setUpdateTime(Date updateTime) {
+//        this.updateTime = updateTime;
+//    }
 
     public Long getDeptId()
     {
@@ -166,15 +203,15 @@ public class SysDept
         this.delFlag = delFlag;
     }
 
-    public String getParentName()
-    {
-        return parentName;
-    }
-
-    public void setParentName(String parentName)
-    {
-        this.parentName = parentName;
-    }
+//    public String getParentName()
+//    {
+//        return parentName;
+//    }
+//
+//    public void setParentName(String parentName)
+//    {
+//        this.parentName = parentName;
+//    }
 
 
 }

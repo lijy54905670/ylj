@@ -4,11 +4,8 @@ import com.xinyuan.ms.common.core.domain.entity.SysMenu;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.mapper.SysMenuRepository;
 import com.xinyuan.ms.service.BaseService;
-import com.xinyuan.ms.service.ISysMenuService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -17,7 +14,7 @@ import java.util.*;
  * @author ruoyi
  */
 @Service
-public class SysMenuServiceImpl extends BaseService<SysMenuRepository,SysMenu,Long> implements ISysMenuService
+public class SysMenuServiceImpl extends BaseService<SysMenuRepository,SysMenu,Long>
 {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
@@ -27,12 +24,9 @@ public class SysMenuServiceImpl extends BaseService<SysMenuRepository,SysMenu,Lo
      *
      * @return 所有菜单信息
      */
-    @Override
-    public List<SysMenu> selectMenuAll(Long userId)
-    {
+    public List<SysMenu> selectMenuAll(Long userId) {
         List<SysMenu> menuList = null;
-        if (SysUser.isAdmin(userId))
-        {
+        if (SysUser.isAdmin(userId)) {
             menuList = bizRepository.SelectMenuAll();
         }
         return menuList;
