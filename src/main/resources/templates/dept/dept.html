@@ -26,7 +26,7 @@
 		        <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:dept:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
-                <a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="system:dept:edit">
+                <a class="btn btn-primary" onclick="$.operate.edit		()" shiro:hasPermission="system:dept:edit">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
                 <a class="btn btn-info" id="expandAllBtn">
@@ -53,7 +53,7 @@
 		        modalName: "部门",
 		        columns: [{
                     field: 'selectItem',
-                    radio: true
+					checkbox: true
                  },
                  {
 		            field: 'deptName',

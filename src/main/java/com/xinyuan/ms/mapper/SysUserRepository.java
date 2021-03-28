@@ -17,4 +17,10 @@ public interface SysUserRepository extends BaseJpaRepository<SysUser,Long>{
      * */
     @Query(value = "select * from sys_user where user_id = ?",nativeQuery = true)
     public SysUser selectUserByid(Long id);
+
+    /**
+     * 根据登录名查询用户信息
+     * */
+    @Query(value = "select * from sys_user where login_name = ?",nativeQuery = true)
+    public SysUser selectUserByName(String userName);
 }

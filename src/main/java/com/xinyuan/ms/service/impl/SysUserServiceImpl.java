@@ -1,6 +1,7 @@
 package com.xinyuan.ms.service.impl;
 
 import com.xinyuan.ms.common.util.EntityUtils;
+import com.xinyuan.ms.common.util.MD5Util;
 import com.xinyuan.ms.common.util.ReflectionUtils;
 import com.xinyuan.ms.entity.SysDept;
 import com.xinyuan.ms.entity.SysUser;
@@ -10,7 +11,9 @@ import com.xinyuan.ms.service.BaseService;
 import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +47,12 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
         return deptService.selectDeptByDeptId(deptId);
     }
 
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     * @throws BaseException
+     */
     public int remove(String ids) throws BaseException {
         String[] split = ids.replace("(", "").replace(")", "").split(",");
         for (int i = 0; i < split.length; i++) {
@@ -57,6 +66,33 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
         }
         return split.length;
 
+    }
+
+    /**
+     * 登录
+     * @param userName
+     * @param password
+     * @param session
+     * @return
+     */
+    public boolean login(String userName, String password, HttpSession session, Model model){
+        SysUser sysUser = bizRepository.selectUserByName(userName);
+        if (sysUser == null){
+            return false;
+        }else {
+            String encryptPassword = encryptPassword(password);
+            if (!sysUser.getPassword().equals(encryptPassword)){
+                return false;
+            }
+        }
+        model.addAttribute("user",sysUser);
+        session.setAttribute("user",sysUser);
+        return true;
+    }
+
+    public String encryptPassword(String pwd){
+        String encryptPwd = MD5Util.MD5(pwd);
+        return encryptPwd;
     }
 
 }

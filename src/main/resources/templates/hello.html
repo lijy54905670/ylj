@@ -6,7 +6,7 @@
 </head>
 
 <body class="gray-bg" style="font: 14px Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial, sans-serif !important;">
-    <input id="userId" name="userId" type="hidden" th:value="1" />
+    <input id="userId" name="userId" type="hidden" th:value="${session.user.userId}" />
     <section class="section-content">
     <div class="row">
         <div class="col-sm-3 pr5">
@@ -58,26 +58,26 @@
                         </ul>
                         <div class="tab-content">
                             <!--用户信息-->
-                            <div class="tab-pane active" id="user_info" ><!--th:object="${user}"-->
+                            <div class="tab-pane active" id="user_info" th:object="${user}"><!--th:object="${user}"-->
                                 <form class="form-horizontal" id="form-user-edit">
                                     <!--隐藏ID-->
                                     <input name="id" id="id" type="hidden">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">用户名称：</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="userName"  placeholder="请输入用户名称">
+                                            <input type="text" class="form-control" name="userName" th:field="*{userName}" placeholder="请输入用户名称">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">手机号码：</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="phonenumber" maxlength="11"  placeholder="请输入手机号码">
+                                            <input type="text" class="form-control" name="phonenumber" maxlength="11" th:field="*{phonenumber}" placeholder="请输入手机号码">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">邮箱：</label>
                                         <div class="col-sm-10">
-                                            <input type="text" maxlength="50" class="form-control" name="email"  placeholder="请输入邮箱">
+                                            <input type="text" maxlength="50" class="form-control" name="email" th:field="*{email}" placeholder="请输入邮箱">
                                         </div>
                                     </div>
                                     <div class="form-group">

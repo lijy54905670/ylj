@@ -5,6 +5,7 @@ import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.mapper.TargetRepository;
 import com.xinyuan.ms.service.BaseService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,10 @@ public class TargetService extends BaseService<TargetRepository, SysTarget,Long>
         List<Ztree> ztrees = initZtree(sysTargets);
         return ztrees;
     }
+
+
+
+
 
 
     /**

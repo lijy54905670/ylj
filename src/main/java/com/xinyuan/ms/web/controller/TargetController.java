@@ -6,10 +6,9 @@ import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.TargetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class TargetController extends BaseController{
     @ResponseBody
     public TableDataInfo targetList(){
         List<SysTarget> sysTargets = targetService.targetList();
-        return getDataTable(sysTargets);
+       return getDataTable(sysTargets);
     }
 
     /**
@@ -52,5 +51,21 @@ public class TargetController extends BaseController{
         List<Ztree> ztrees = targetService.targeTree();
         return ztrees;
     }
+
+
+    @PostMapping("/addPeriod")
+    public String add(){
+        return prefix + "/add";
+    }
+
+    @GetMapping("/addPeriod/{id}")
+    public String add1(@PathVariable("id") String id, Model model){
+        System.out.println(id);
+        model.addAttribute("ids",id);
+        return prefix + "/add";
+    }
+
+
+
 
 }

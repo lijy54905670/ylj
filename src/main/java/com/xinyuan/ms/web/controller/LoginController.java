@@ -1,6 +1,7 @@
 package com.xinyuan.ms.web.controller;
 
 import com.xinyuan.ms.common.core.page.TableDataInfo;
+import com.xinyuan.ms.common.entity.AjaxResult;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.DeptServiceImpl;
@@ -13,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import javax.jws.WebParam;
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import static com.xinyuan.ms.common.entity.AjaxResult.error;
 
@@ -37,6 +42,19 @@ public class LoginController extends BaseController{
         return "login";
     }
 
+    @RequestMapping("/login")
+    @ResponseBody
+    public AjaxResult login(String username, String password, Model model, HttpSession session){
+        if ( sysUserService.login(username, password,session,model)){
+            List<SysMenu> menus = iSysMenuService.selectMenuAll(1l);
+            model.addAttribute("menus",menus);
+            return success();
+        }else {
+            String msg = "用户名或密码不存在";
+            return error(msg);
+        }
+    }
+
     /**
      * 跳转index页面
      * @param model
@@ -50,7 +68,8 @@ public class LoginController extends BaseController{
     }
 
     @RequestMapping("/system/user/profile")
-    public String profile(){
+    public String profile(Model model,HttpSession session){
+        model.addAttribute("user",session.getAttribute("user"));
         int i = 0;
         return "hello";
     }
@@ -60,7 +79,9 @@ public class LoginController extends BaseController{
      * @return
      */
     @RequestMapping("/system/user")
-    public String userList(){
+    public String userList(HttpSession session){
+        SysUser user = (SysUser) session.getAttribute("user");
+        int i = 1;
         return "user/user";
     }
 
@@ -102,7 +123,7 @@ public class LoginController extends BaseController{
     {
         mmap.put("dept", deptService.selectDeptByDeptId(deptId));
         mmap.put("excludeId", excludeId);
-        return "tree";
+        return "dept/tree";
     }
 
 

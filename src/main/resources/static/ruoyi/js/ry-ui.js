@@ -1017,6 +1017,7 @@ var table = {
             removeAll: function() {
             	table.set();
             	var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+            	console.log(rows)
             	if (rows.length == 0) {
             	    $.modal.alertWarning("请至少选择一条记录");
             	    return;
@@ -1027,6 +1028,7 @@ var table = {
             	    $.operate.submit(url, "post", "json", data);
             	});
             },
+
             // 清空信息
             clean: function() {
             	table.set();
@@ -1040,6 +1042,19 @@ var table = {
             	table.set();
             	$.modal.open("添加" + table.options.modalName, $.operate.addUrl(id));
             },
+            addPeriod: function() {
+                table.set();
+                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+                console.log(rows)
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                table.set();
+                // var s = rows.toString();
+                $.modal.open("添加" + table.options.modalName, $.operate.addUrl1(rows));
+            },
+
             // 添加信息，以tab页展现
             addTab: function (id) {
             	table.set();
@@ -1054,6 +1069,11 @@ var table = {
             addUrl: function(id) {
             	var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
             	console.log(url);
+                return url;
+            },
+            addUrl1: function(id) {
+                var url = $.common.isEmpty(id) ? table.options.addPeriodUrl.replace("{id}", "") : table.options.addPeriodUrl.replace("{id}", id);
+                console.log(url);
                 return url;
             },
             // 修改信息
