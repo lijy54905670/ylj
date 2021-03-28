@@ -20,13 +20,16 @@ public class PeriodService extends BaseService<PeriodRepository,SysPeriod,Long> 
 
 
     public List<Ztree> periodTree(){
-        List<SysPeriod> sysPeriods = bizRepository.periodList();
+        List<SysPeriod> sysPeriods = bizRepository.periodList(null);
         return initZtree(sysPeriods);
     }
 
-    public List<SysPeriod> selectDeptByDeptId(Long periodId){
-        List<SysPeriod> sysPeriods = bizRepository.periodList();
-        return sysPeriods;
+    public SysPeriod selectDeptByDeptId(Long periodId){
+        List<SysPeriod> sysPeriods = bizRepository.periodList(periodId);
+        if (sysPeriods != null){
+            return sysPeriods.get(0);
+        }
+        return null;
     }
 
     /**
