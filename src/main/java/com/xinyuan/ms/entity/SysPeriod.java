@@ -1,5 +1,7 @@
 package com.xinyuan.ms.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,9 +25,19 @@ public class SysPeriod {
 
     private String title;
 
+
     private Date startTime;
 
     private Date endTime;
+    private String delFlag;
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
 
     public Long getPeriodId() {
         return periodId;

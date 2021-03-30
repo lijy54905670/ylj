@@ -1,6 +1,5 @@
 package com.xinyuan.ms.service;
 
-import com.xinyuan.ms.common.constant.UserConstants;
 import com.xinyuan.ms.common.service.Order;
 import com.xinyuan.ms.common.service.PageBean;
 import com.xinyuan.ms.common.service.ParamCondition;
@@ -11,8 +10,6 @@ import com.xinyuan.ms.common.util.ResultUtil;
 import com.xinyuan.ms.common.web.Conditions;
 import com.xinyuan.ms.common.web.Message;
 import com.xinyuan.ms.common.web.PageBody;
-import com.xinyuan.ms.entity.SysDept;
-import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.mapper.BaseJpaRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -84,8 +81,9 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
      * 业务删除方法(初始化和校验)
      *
      * @author 2018-03-06 14:01
+     * @return
      */
-    public void remove(ID id) throws BaseException {
+    public int remove(ID id) throws BaseException {
         T entity = bizRepository.findOne(id);
         if (entity != null) {
             if (ReflectionUtils.hasField(entity, "deleted")) {
@@ -93,6 +91,7 @@ public abstract class BaseService<J extends BaseJpaRepository<T, ID>, T, ID exte
             }
             bizRepository.save(entity);
         }
+        return 0;
     }
 
     /**

@@ -4,6 +4,7 @@ import com.xinyuan.ms.common.core.page.TableDataInfo;
 import com.xinyuan.ms.entity.SysTarget;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.TargetService;
+import com.xinyuan.ms.web.request.TargetVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +36,9 @@ public class TargetController extends BaseController{
      */
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo targetList(){
-        List<SysTarget> sysTargets = targetService.targetList();
+    public TableDataInfo targetList(TargetVo targetVo){
+        System.out.println(targetVo);
+        List<SysTarget> sysTargets = targetService.targetList(targetVo);
        return getDataTable(sysTargets);
     }
 

@@ -547,6 +547,18 @@ var table = {
             hideAllColumns: function(tableId) {
             	var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
             	$("#" + currentId).bootstrapTable('hideAllColumns');
+            },
+            //ylj新加
+            editCell: function(index, field, value){
+                $('#bootstrap-table').bootstrapTable('updateCell', {
+                    index: index,       //行索引
+                    field: field,       //列名
+                    value: value        //cell值
+                })
+            },
+            getTableData: function(tableId){
+                var data = $('#' + tableId).bootstrapTable('getData');
+                return data;
             }
         },
         // 表格树封装处理
@@ -1042,6 +1054,17 @@ var table = {
             	table.set();
             	$.modal.open("添加" + table.options.modalName, $.operate.addUrl(id));
             },
+
+            //ylj新加
+            addPeriodUser: function(id) {
+                table.set();
+                if ($.common.isEmpty(id)) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                $.modal.open("添加" + table.options.modalName, $.operate.addUrl2(id));
+            },
+
             addPeriod: function() {
                 table.set();
                 var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
@@ -1050,9 +1073,18 @@ var table = {
                     $.modal.alertWarning("请至少选择一条记录");
                     return;
                 }
-                table.set();
-                // var s = rows.toString();
                 $.modal.open("添加" + table.options.modalName, $.operate.addUrl1(rows));
+            },
+
+            addPeriodUser12: function() {
+                table.set();
+                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+                console.log(rows)
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                return rows
             },
 
             // 添加信息，以tab页展现
@@ -1073,6 +1105,11 @@ var table = {
             },
             addUrl1: function(id) {
                 var url = $.common.isEmpty(id) ? table.options.addPeriodUrl.replace("{id}", "") : table.options.addPeriodUrl.replace("{id}", id);
+                console.log(url);
+                return url;
+            },
+            addUrl2: function(id) {
+                var url = $.common.isEmpty(id) ? table.options.addPeriodUserUrl.replace("{id}", "") : table.options.addPeriodUserUrl.replace("{id}", id);
                 console.log(url);
                 return url;
             },
@@ -1132,6 +1169,23 @@ var table = {
             	}
                 return url;
             },
+            isEmpty: function (value) {
+                if (value == null || this.trim(value) == "") {
+                    return true;
+                }
+                return false;
+            },
+
+            // 空格截取
+            trim: function (value) {
+                if (value == null) {
+                    return "";
+                }
+                return value.toString().replace(/(^\s*)|(\s*$)|\r|\n/g, "");
+            },
+
+
+            /*---------------------------------------------------------------------*/
             // 保存信息 刷新表格
             save: function(url, data, callback) {
             	var config = {

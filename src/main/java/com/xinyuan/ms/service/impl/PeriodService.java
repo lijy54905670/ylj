@@ -1,32 +1,41 @@
 package com.xinyuan.ms.service.impl;
 
+import com.xinyuan.ms.common.util.ReflectionUtils;
 import com.xinyuan.ms.entity.SysPeriod;
-import com.xinyuan.ms.entity.SysTarget;
 import com.xinyuan.ms.entity.Ztree;
+import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.mapper.PeriodRepository;
 import com.xinyuan.ms.service.BaseService;
+import com.xinyuan.ms.web.vo.AddPeriodVo;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class PeriodService extends BaseService<PeriodRepository,SysPeriod,Long> {
+public class PeriodService extends BaseService<PeriodRepository, SysPeriod, Long> {
 
-    public List<SysPeriod> period(){
+    public List<SysPeriod> period() {
         List<SysPeriod> period = bizRepository.period();
         return period;
     }
 
+    public List<SysPeriod> allPeriod() {
+        List<SysPeriod> period = bizRepository.periodList(null);
+        return period;
+    }
 
-    public List<Ztree> periodTree(){
+    public List<Ztree> periodTree() {
         List<SysPeriod> sysPeriods = bizRepository.periodList(null);
         return initZtree(sysPeriods);
     }
 
-    public SysPeriod selectDeptByDeptId(Long periodId){
+    public SysPeriod selectDeptByDeptId(Long periodId) {
         List<SysPeriod> sysPeriods = bizRepository.periodList(periodId);
-        if (sysPeriods != null){
+        if (sysPeriods != null) {
             return sysPeriods.get(0);
         }
         return null;
@@ -38,8 +47,7 @@ public class PeriodService extends BaseService<PeriodRepository,SysPeriod,Long> 
      * @param deptList 部门列表
      * @return 树结构列表
      */
-    public List<Ztree> initZtree(List<SysPeriod> deptList)
-    {
+    public List<Ztree> initZtree(List<SysPeriod> deptList) {
         return initZtree(deptList, null);
     }
 
@@ -47,27 +55,61 @@ public class PeriodService extends BaseService<PeriodRepository,SysPeriod,Long> 
     /**
      * 对象转部门树
      *
-     * @param deptList 部门列表
+     * @param deptList     部门列表
      * @param roleDeptList 角色已存在菜单列表
      * @return 树结构列表
      */
-    public List<Ztree> initZtree(List<SysPeriod> deptList, List<String> roleDeptList)
-    {
+    public List<Ztree> initZtree(List<SysPeriod> deptList, List<String> roleDeptList) {
         List<Ztree> ztrees = new ArrayList<Ztree>();
         boolean isCheck = false;
-        for (SysPeriod dept : deptList)
-        {
+        for (SysPeriod dept : deptList) {
             Ztree ztree = new Ztree();
             ztree.setId(dept.getPeriodId());
             ztree.setpId(dept.getParentId());
             ztree.setName(dept.getTitle());
             ztree.setTitle(dept.getTitle());
-            if (isCheck)
-            {
+            if (isCheck) {
                 ztree.setChecked(roleDeptList.contains(dept.getPeriodId() + dept.getTitle()));
             }
             ztrees.add(ztree);
         }
         return ztrees;
+    }
+
+
+    public void addPeriod(AddPeriodVo addPeriodVo) {
+        SysPeriod sysPeriod = new SysPeriod();
+        sysPeriod.setParentId(addPeriodVo.getPeriodId());
+        sysPeriod.setTitle(addPeriodVo.getTitle());
+        sysPeriod.setStartTime(getDate(addPeriodVo.getStartTime()));
+        sysPeriod.setEndTime(getDate(addPeriodVo.getEndTime()));
+        sysPeriod.setDelFlag("0");
+        save(sysPeriod);
+    }
+
+    public Date getDate(String date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = null;
+        try {
+            parse = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parse;
+    }
+
+
+    /**
+     * 删除用户
+     */
+    public int remove(Long id) throws BaseException {
+        SysPeriod entity = bizRepository.findOne(id);
+        if (entity != null) {
+            if (ReflectionUtils.hasField(entity, "delFlag")) {
+                ReflectionUtils.invokeSetter(entity, "delFlag", "1");
+            }
+            bizRepository.save(entity);
+        }
+        return 1;
     }
 }

@@ -5,13 +5,6 @@
     <th:block th:include="include1 :: header('用户列表')" />
     <th:block th:include="include1 :: layout-latest-css" />
     <th:block th:include="include1 :: ztree-css" />
-
-    <style>
-        .select-list ul li {
-            margin-left: 30px;
-            line-height: 40px;
-        }
-    </style>
 </head>
 <body class="gray-bg">
 <div class="ui-layout-west">
@@ -40,29 +33,15 @@
     <div class="container-div">
         <div class="row">
 
-            <div class="col-sm-12 search-collapse">
-                <form id="add-form">
-                    <div class="select-list">
-                        <ul>
-                            <li>
-                                考核期间：<span th:text="2010年度考评"></span>
-                            </li>
-                            <li>
-                                开始时间：<span th:text="2010年度考评"></span>
-                            </li>
-                            <li>
-                                结束时间：<span th:text="2010年度考评"></span>
-                            </li>
-
-                        </ul>
-                    </div>
-                </form>
-            </div>
-
-
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success disabled" onclick="$.operate.addPeriodUser($('#periodId').val())">
-                    <i class="fa fa-plus"></i> 添加考评对象
+                <a class="btn btn-success" onclick="$.operate.addTab()">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                    <i class="fa fa-remove"></i> 删除
                 </a>
             </div>
 
@@ -110,18 +89,13 @@
             url: prefix2 + "/list",
             createUrl: prefix2 + "/add/{id}",
             addPeriodUrl: prefix2 + "/addPeriod/{id}",
-            addPeriodUserUrl: prefix + "/addPeriodUser/{id}",
             pageSize: 100,
             clickToSelect: false,
             showToggle: false,
-            showRefresh: false,//是否显示刷新按钮
-            showSearch: false,//搜索按钮
-            showColumns: false,//列选择
             modalName: "指标",
-            columns: [
-            //     {
-            //     checkbox: true
-            // },
+            columns: [{
+                checkbox: true
+            },
                 {
                     field: 'targetId',
                     title: '指标ID',
@@ -186,6 +160,14 @@
 
     }
 
+    function saveData(index, field, value) {
+        $.table.bootstrapTable('updateCell', {
+            index: index,       //行索引
+            field: field,       //列名
+            value: value        //cell值
+        })
+    }
+
     function queryDeptTree()
     {
         var url = ctx + "system/period/treeData";
@@ -197,13 +179,10 @@
         $.tree.init(options);
 
         function zOnClick(event, treeId, treeNode) {
+            console.log("zOnClick");
+            console.log(treeNode,"treeNode")
             $("#periodId").val(treeNode.id);
             $("#parentId").val(treeNode.pId);
-            if($.operate.isEmpty($("#parentId").val())){
-                $(".btn-success").addClass("disabled")
-            }else {
-                $(".btn-success").removeClass("disabled")
-            }
             $.table.search("period-form");
         }
     }
@@ -270,90 +249,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<head>
-    <th:block th:include="include1 :: header('部门列表')" />
-</head>
-<body class="gray-bg">
-<div class="container-div">
-    <div class="row">
-        <div class="col-sm-12 search-collapse">
-            <form id="dept-form">
-                <div class="select-list">
-                    <ul>
-                        <li>
-                            部门名称：<input type="text" name="deptName"/>
-                        </li>
-                        <li>
-                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                        </li>
-                    </ul>
-                </div>
-            </form>
-        </div>
-
-        <div class="btn-group-sm" id="toolbar" role="group">
-            <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:dept:add">
-                <i class="fa fa-plus"></i> 新增
-            </a>
-            <a class="btn btn-primary" onclick="$.operate.edit()" shiro:hasPermission="system:dept:edit">
-                <i class="fa fa-edit"></i> 修改
-            </a>
-            <a class="btn btn-info" id="expandAllBtn">
-                <i class="fa fa-exchange"></i> 展开/折叠
-            </a>
-        </div>
-        <div class="col-sm-12 select-table table-striped">
-            <table id="bootstrap-tree-table"></table>
-        </div>
-    </div>
-</div>
-<th:block th:include="include1 :: footer" />
-<script th:inline="javascript">
-    var prefix = ctx + "system/target"
-    $(function() {
-        var options = {
-            code: "targetId",
-            parentCode: "parentId",
-            uniqueId: "targetId",
-            url: prefix + "/list",
-            createUrl: prefix + "/add/{id}",
-            updateUrl: prefix + "/edit/{id}",
-            removeUrl: prefix + "/remove/{id}",
-            modalName: "部门",
-            columns: [{
-                field: 'selectItem',
-                radio: true
-            },
-                {
-                    field: 'content',
-                    title: '部门名称',
-                    align: "left"
-                }
-                ]
-        };
-        $.treeTable.init(options);
-    });
-</script>
-</body>
-</html>
--->

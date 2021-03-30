@@ -4,17 +4,43 @@ import com.xinyuan.ms.entity.SysTarget;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.mapper.TargetRepository;
 import com.xinyuan.ms.service.BaseService;
+import com.xinyuan.ms.web.request.TargetVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TargetService extends BaseService<TargetRepository, SysTarget,Long> {
 
-    public List<SysTarget> targetList(){
-        List<SysTarget> sysTargets = bizRepository.targetList();
+    @Autowired
+    SysPeriodTargetService sysPeriodTargetService;
+
+
+    public List<SysTarget> targetList(TargetVo targetVo){
+
+        Long periodId = targetVo.getPeriodId();
+        String targetIds = "";
+        if (periodId != null && targetVo.getPeriodId()!=null) {
+            targetIds = sysPeriodTargetService.selectTargetIds(periodId);
+        }
+        Set<Long> ids = new HashSet<>();
+        String i = "";
+        if (targetIds != null && !targetIds.equals("")) {
+            ids = Arrays.stream(targetIds.split(",")).map(Long::parseLong).collect(Collectors.toSet());
+            i = "1";
+        }else {
+            ids.add(-1L);
+        }
+        List<SysTarget> sysTargets ;
+        if (targetVo != null && targetVo.getCla() !=null && targetVo.getCla().equals("period")){
+            sysTargets = bizRepository.targetList1(i,ids);
+        }else {
+            sysTargets = bizRepository.targetList();
+        }
         return sysTargets;
     }
 
