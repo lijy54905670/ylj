@@ -3,9 +3,11 @@ package com.xinyuan.ms.web.controller;
 import com.xinyuan.ms.common.core.page.TableDataInfo;
 import com.xinyuan.ms.common.entity.AjaxResult;
 import com.xinyuan.ms.entity.SysPeriod;
+import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.PeriodService;
 import com.xinyuan.ms.web.vo.AddPeriodVo;
+import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -26,9 +28,26 @@ public class PeriodController extends BaseController{
     @Autowired
     PeriodService periodService;
 
-    @GetMapping
-    public String period(){
-        return prefix + "/period";
+    @GetMapping("/periodTarget")
+    public String periodTarget(){
+        return prefix + "/periodTarget";
+    }
+
+    @GetMapping("/periodUser")
+    public String periodUser(){
+        return prefix + "/periodUser";
+    }
+
+    /**
+     * 获取周期考评对象
+     * @param user
+     * @return
+     */
+    @RequestMapping("/periodUser/list")
+    @ResponseBody
+    public TableDataInfo periodUserList(SysUser user){
+        List<SysUserVo> list = periodService.getList(user);
+        return getDataTable(list);
     }
 
 
@@ -43,6 +62,10 @@ public class PeriodController extends BaseController{
          return getDataTable(period);
     }
 
+    /**
+     * 返回所有考评周期
+     * @return
+     */
     @RequestMapping("/allList")
     @ResponseBody
     public List<SysPeriod> allPeriodList(){
@@ -50,6 +73,10 @@ public class PeriodController extends BaseController{
         return period;
     }
 
+    /**
+     * 考评周期新增修改页面
+     * @return
+     */
     @GetMapping("/periodEdit")
     public String periodEdit(){
         return prefix + "/periodEdit";
@@ -68,6 +95,11 @@ public class PeriodController extends BaseController{
         return prefix + "/addPeriod";
     }
 
+    /**
+     * 新建考评周期
+     * @param addPeriodVo
+     * @return
+     */
     @PostMapping("/addPeriod")
     @ResponseBody
     public AjaxResult addPeriod(AddPeriodVo addPeriodVo){
@@ -76,6 +108,11 @@ public class PeriodController extends BaseController{
         return toAjax(1);
     }
 
+    /**
+     * 删除考评周期
+     * @param periodId
+     * @return
+     */
     @GetMapping("/remove/{id}")
     @ResponseBody
     public AjaxResult removePeriod(@PathVariable("id") Long periodId){
@@ -124,13 +161,15 @@ public class PeriodController extends BaseController{
         return prefix + "/addPeriodUser";
     }
 
-
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    /**
+     * 添加周期指标
+     * @param periodId
+     * @param model
+     * @return
+     */
+    @GetMapping("/addPeriodTarget/{id}")
+    public String addPeriodTarget(@PathVariable("id") Long periodId, Model model){
+        model.addAttribute("periodId",periodId);
+        return prefix + "/addPeriodTarget";
     }
-
 }

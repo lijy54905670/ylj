@@ -12,11 +12,19 @@ public class SysUserPeriod {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private Long userId;
+    private String userIds;
 
     private Long periodId;
 
-    private Long targetId;
+    public String getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(String userIds) {
+        this.userIds = userIds;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -26,13 +34,6 @@ public class SysUserPeriod {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Long getPeriodId() {
         return periodId;
@@ -42,21 +43,14 @@ public class SysUserPeriod {
         this.periodId = periodId;
     }
 
-    public Long getTargetId() {
-        return targetId;
-    }
 
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
 
     @Override
     public String toString() {
         return "SysUserPeriod{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", userId=" + userIds +
                 ", periodId=" + periodId +
-                ", targetId=" + targetId +
                 '}';
     }
 }

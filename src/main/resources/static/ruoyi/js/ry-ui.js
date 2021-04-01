@@ -348,6 +348,7 @@ var table = {
             },
             // 搜索-默认第一个form
             search: function(formId, tableId) {
+                console.log("351");
                 table.set(tableId);
                 table.options.formId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
                 var params = $.common.isEmpty(tableId) ? $("#" + table.options.id).bootstrapTable('getOptions') : $("#" + tableId).bootstrapTable('getOptions');
@@ -609,6 +610,7 @@ var table = {
             },
             // 条件查询
             search: function(formId) {
+                console.log("613");
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
             	var params = $.common.formToJSON(currentId);
                 $.bttTable.bootstrapTreeTable('refresh', params);

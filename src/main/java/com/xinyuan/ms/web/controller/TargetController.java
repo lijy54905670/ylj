@@ -1,6 +1,7 @@
 package com.xinyuan.ms.web.controller;
 
 import com.xinyuan.ms.common.core.page.TableDataInfo;
+import com.xinyuan.ms.common.entity.AjaxResult;
 import com.xinyuan.ms.entity.SysTarget;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.TargetService;
@@ -8,7 +9,6 @@ import com.xinyuan.ms.web.request.TargetVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -68,6 +68,40 @@ public class TargetController extends BaseController{
     }
 
 
+    /**
+     * 新增指标页面
+     * @return
+     */
+    @GetMapping("/add")
+    public String addTargetHtml(){
+        return prefix + "/addTarget";
+    }
 
+    /**
+     * 保存新建指标
+     * @param sysTarget
+     * @return
+     */
+    @RequestMapping("/addTarget")
+    @ResponseBody
+    public AjaxResult addTarget(SysTarget sysTarget){
+        if(targetService.addTarget(sysTarget)){
+            return toAjax(1);
+        }else {
+            return AjaxResult.error("新建指标失败");
+        }
+    }
+
+    /**
+     * 删除指标
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/remove")
+    @ResponseBody
+    public AjaxResult remove(String ids){
+        targetService.remove(ids);
+        return toAjax(1);
+    }
 
 }

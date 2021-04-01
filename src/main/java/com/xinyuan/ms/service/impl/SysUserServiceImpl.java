@@ -15,7 +15,10 @@ import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,Long> {
@@ -38,11 +41,21 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
         return sysUserVos;
     }
 
+    /**
+     * 通过用户id查找用户
+     * @param id
+     * @return
+     */
     public SysUser selectUserByid(Long id){
         SysUser sysUser = bizRepository.selectUserByid(id);
         return sysUser;
     }
 
+    /**
+     * 根据部门id查找部门
+     * @param deptId
+     * @return
+     */
     public SysDept selectUserDept(Long deptId){
         return deptService.selectDeptByDeptId(deptId);
     }
@@ -90,9 +103,23 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
         return true;
     }
 
+    /**
+     * 密码加密
+     * @param pwd
+     * @return
+     */
     public String encryptPassword(String pwd){
         String encryptPwd = MD5Util.MD5(pwd);
         return encryptPwd;
+    }
+
+    /**
+     * 通过用户id集合查询用户
+     */
+    public List<SysUser> getUserByIds(String ids){
+        Set<Long> collect = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toSet());
+        List<SysUser> userByIds = bizRepository.getUserByIds(collect);
+        return userByIds;
     }
 
 }

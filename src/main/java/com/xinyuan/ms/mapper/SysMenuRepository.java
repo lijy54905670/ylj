@@ -5,6 +5,6 @@ import java.util.List;
 
 
 public interface SysMenuRepository extends BaseJpaRepository<SysMenu,Long>{
-    @Query(value = "select * from sys_menu where parent_id = '1'",nativeQuery = true)
-    public List<SysMenu> SelectMenuAll();
+    @Query(value = "select * from sys_menu where parent_id = '0' or parent_id = '11' or parent_id = '12' or parent_id = '13'",nativeQuery = true)
+    List<SysMenu> SelectMenuAll();
 }

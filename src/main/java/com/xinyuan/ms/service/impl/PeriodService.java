@@ -2,11 +2,14 @@ package com.xinyuan.ms.service.impl;
 
 import com.xinyuan.ms.common.util.ReflectionUtils;
 import com.xinyuan.ms.entity.SysPeriod;
+import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.mapper.PeriodRepository;
 import com.xinyuan.ms.service.BaseService;
 import com.xinyuan.ms.web.vo.AddPeriodVo;
+import com.xinyuan.ms.web.vo.SysUserVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -18,8 +21,22 @@ import java.util.List;
 @Service
 public class PeriodService extends BaseService<PeriodRepository, SysPeriod, Long> {
 
+    @Autowired
+    SysUserServiceImpl sysUserService;
+
+
     public List<SysPeriod> period() {
         List<SysPeriod> period = bizRepository.period();
+        return period;
+    }
+
+    /**
+     * 通过id查找周期
+     * @param periodId
+     * @return
+     */
+    public SysPeriod periodById(Long periodId) {
+        SysPeriod period = bizRepository.periodById(periodId);
         return period;
     }
 
@@ -32,6 +49,7 @@ public class PeriodService extends BaseService<PeriodRepository, SysPeriod, Long
         List<SysPeriod> sysPeriods = bizRepository.periodList(null);
         return initZtree(sysPeriods);
     }
+
 
     public SysPeriod selectDeptByDeptId(Long periodId) {
         List<SysPeriod> sysPeriods = bizRepository.periodList(periodId);
@@ -68,6 +86,8 @@ public class PeriodService extends BaseService<PeriodRepository, SysPeriod, Long
             ztree.setpId(dept.getParentId());
             ztree.setName(dept.getTitle());
             ztree.setTitle(dept.getTitle());
+            ztree.setStartTime(dept.getStartTime());
+            ztree.setEndTime(dept.getEndTime());
             if (isCheck) {
                 ztree.setChecked(roleDeptList.contains(dept.getPeriodId() + dept.getTitle()));
             }
@@ -77,6 +97,10 @@ public class PeriodService extends BaseService<PeriodRepository, SysPeriod, Long
     }
 
 
+    /**
+     * 新增考评周期
+     * @param addPeriodVo
+     */
     public void addPeriod(AddPeriodVo addPeriodVo) {
         SysPeriod sysPeriod = new SysPeriod();
         sysPeriod.setParentId(addPeriodVo.getPeriodId());
@@ -111,5 +135,10 @@ public class PeriodService extends BaseService<PeriodRepository, SysPeriod, Long
             bizRepository.save(entity);
         }
         return 1;
+    }
+
+    public List<SysUserVo> getList(SysUser user) {
+        List<SysUserVo> list = sysUserService.getList(user);
+        return list;
     }
 }

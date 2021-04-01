@@ -8,7 +8,7 @@
 
     <style>
         .select-list ul li {
-            margin-left: 30px;
+            padding:0 20px;
             line-height: 40px;
         }
     </style>
@@ -31,9 +31,9 @@
         </div>
     </div>
 </div>
-                <form id="period-form">
-                    <input type="hidden" id="periodId" name="periodId">
-                    <input type="hidden" id="parentId" name="parentId">
+                <form id="periodUser-form">
+                    <input type="hidden" id="periodId1" name="periodId">
+                    <input type="hidden" id="parentId1" name="parentId">
                     <input type="hidden" id="cla" name="cla" value="period">
                 </form>
 <div class="ui-layout-center">
@@ -45,13 +45,13 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                考核期间：<span th:text="2010年度考评"></span>
+                                考核期间：<span id="span1"></span>
                             </li>
                             <li>
-                                开始时间：<span th:text="2010年度考评"></span>
+                                开始时间：<span id="span2"></span>
                             </li>
                             <li>
-                                结束时间：<span th:text="2010年度考评"></span>
+                                结束时间：<span id="span3"></span>
                             </li>
 
                         </ul>
@@ -61,8 +61,11 @@
 
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success disabled" onclick="$.operate.addPeriodUser($('#periodId').val())">
+                <a class="btn btn-success disabled" onclick="$.operate.addPeriodUser($('#periodId1').val())">
                     <i class="fa fa-plus"></i> 添加考评对象
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                    <i class="fa fa-remove"></i> 删除
                 </a>
             </div>
 
@@ -83,6 +86,7 @@
     var resetPwdFlag = true;
     var prefix = ctx + "system/period";
     var prefix2 = ctx + "system/target";
+    var prefix3 = ctx + "system/userPeriod";
 
     $(function() {
         var panehHidden = false;
@@ -98,64 +102,18 @@
             };
             $('#scroll-up').toTop(opt);
         }
-        //queryUserList();
-        queryTargetList();
+        queryUserList();
+        //queryTargetList();
         queryDeptTree();
 
     });
 
 
-    function queryTargetList() {
-        var options = {
-            url: prefix2 + "/list",
-            createUrl: prefix2 + "/add/{id}",
-            addPeriodUrl: prefix2 + "/addPeriod/{id}",
-            addPeriodUserUrl: prefix + "/addPeriodUser/{id}",
-            pageSize: 100,
-            clickToSelect: false,
-            showToggle: false,
-            showRefresh: false,//是否显示刷新按钮
-            showSearch: false,//搜索按钮
-            showColumns: false,//列选择
-            modalName: "指标",
-            columns: [
-            //     {
-            //     checkbox: true
-            // },
-                {
-                    field: 'targetId',
-                    title: '指标ID',
-                    width: '10%'
-                },
-                {
-                    field: 'content',
-                    title: '内容'
-                }
-            ],
-            onClickCell: function(field, value, row, $element) {
-                console.log("onClickCell");
-                console.log(field,"hahahha");
-                if(field == 'content') {
-                    $element.attr('contenteditable', true);
-                    $element.blur(function () {
-                        let index = $element.parent().data('index');
-                        let tdValue = $element.html();
-                        $.table.editCell(index, field, tdValue);
-                    })
-                }
-                setTimeout(function(){
-                    alert(JSON.stringify($.table.getTableData($('table').attr("id"))));
-                },5000);
-            }
-        };
-        $.table.init(options);
-    }
-
-
 
     function queryUserList() {
         var options = {
-            url: prefix + "/list",
+            url: prefix3 + "/periodUser",
+            addPeriodUserUrl: prefix + "/addPeriodUser/{id}",
             modalName: "指标",
             showRefresh: false,  //是否显示刷新按钮
             clickToSelect: false,
@@ -164,20 +122,16 @@
                 checkbox: true
             },
                 {
-                    field: 'periodId',
-                    title: '指标ID'
+                    field: 'userId',
+                    title: '用户ID'
                 },
                 {
-                    field: 'title',
-                    title: '内容'
+                    field: 'userName',
+                    title: '用户名称'
                 },
                 {
-                    field: 'startTime',
-                    title: '开始时间'
-                },
-                {
-                    field: 'endTime',
-                    title: '结束时间'
+                    field: 'dept.deptName',
+                    title: '部门'
                 }
             ],
 
@@ -197,14 +151,21 @@
         $.tree.init(options);
 
         function zOnClick(event, treeId, treeNode) {
-            $("#periodId").val(treeNode.id);
-            $("#parentId").val(treeNode.pId);
-            if($.operate.isEmpty($("#parentId").val())){
+            $("#parentId1").val(treeNode.pId);
+            $("#periodId1").val(treeNode.id)
+            console.log($("#periodId1").val(),"treeNode");
+            console.log($("#parentId1").val(),"treeNode.pId");
+            if($.operate.isEmpty($("#parentId1").val())){
                 $(".btn-success").addClass("disabled")
+                console.log("12");
             }else {
+                $('#span1').html(treeNode.name)
+                $('#span2').html(treeNode.startTime)
+                $('#span3').html(treeNode.endTime)
+                console.log("13");
                 $(".btn-success").removeClass("disabled")
             }
-            $.table.search("period-form");
+            $.table.search("periodUser-form");
         }
     }
 

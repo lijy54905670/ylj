@@ -7,6 +7,7 @@ import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.service.impl.DeptServiceImpl;
 import com.xinyuan.ms.service.impl.SysMenuServiceImpl;
 import com.xinyuan.ms.service.impl.SysUserServiceImpl;
+import com.xinyuan.ms.web.vo.SysMenuVo;
 import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.ui.Model;
 import com.xinyuan.ms.common.core.domain.entity.SysMenu;
@@ -46,7 +47,7 @@ public class LoginController extends BaseController{
     @ResponseBody
     public AjaxResult login(String username, String password, Model model, HttpSession session){
         if ( sysUserService.login(username, password,session,model)){
-            List<SysMenu> menus = iSysMenuService.selectMenuAll(1l);
+            List<SysMenuVo> menus = iSysMenuService.selectMenuAll(1l);
             model.addAttribute("menus",menus);
             return success();
         }else {
@@ -62,7 +63,7 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/index")
     public String index(Model model){
-        List<SysMenu> menus = iSysMenuService.selectMenuAll(1l);
+        List<SysMenuVo> menus = iSysMenuService.selectMenuAll(1l);
         model.addAttribute("menus",menus);
         return "index1";
     }

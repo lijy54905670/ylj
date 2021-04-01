@@ -1,9 +1,11 @@
 package com.xinyuan.ms.service.impl;
 
 import com.xinyuan.ms.common.core.domain.entity.SysMenu;
+import com.xinyuan.ms.common.util.EntityUtils;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.mapper.SysMenuRepository;
 import com.xinyuan.ms.service.BaseService;
+import com.xinyuan.ms.web.vo.SysMenuVo;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,12 +26,28 @@ public class SysMenuServiceImpl extends BaseService<SysMenuRepository,SysMenu,Lo
      *
      * @return 所有菜单信息
      */
-    public List<SysMenu> selectMenuAll(Long userId) {
-        List<SysMenu> menuList = null;
+    public List<SysMenuVo> selectMenuAll(Long userId) {
+        List<SysMenuVo> sysMenuVos = new ArrayList<>();
         if (SysUser.isAdmin(userId)) {
-            menuList = bizRepository.SelectMenuAll();
+            List<SysMenu> menuList = bizRepository.SelectMenuAll();
+            if (menuList != null && menuList.size()>0) {
+                for (SysMenu sysMenu1 : menuList) {
+                    SysMenuVo sysMenuVo = new SysMenuVo();
+                    EntityUtils.copyPropertiesIgnoreNull(sysMenu1, sysMenuVo);
+                    List<SysMenu> sysMenus = new ArrayList<>();
+                    for (SysMenu sysMenu2 : menuList) {
+                        if (sysMenu1.getMenuId() == sysMenu2.getParentId()) {
+                            sysMenus.add(sysMenu2);
+                        }
+                    }
+                    sysMenuVo.setChildren(sysMenus);
+                    if (sysMenus.size() > 0) {
+                        sysMenuVos.add(sysMenuVo);
+                    }
+                }
+            }
         }
-        return menuList;
+        return sysMenuVos;
     }
 
     /**

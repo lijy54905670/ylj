@@ -14,7 +14,7 @@
 				    <table id="bootstrap-table"></table>
 
 					<form class="form-horizontal m" id="form-periodUser-add">
-						<input class="form-control" type="hidden" name="userIds" id="userIds">
+						<input class="form-control" type="hidden" name="targetIds" id="targetIds">
 						<input class="form-control" type="hidden" name="periodId" th:value="${periodId}">
 					</form>
 				</div>
@@ -29,8 +29,8 @@
 		var editFlag = true;
 		var removeFlag = true;
 		var resetPwdFlag = true;
-		var prefix = ctx + "system/user";
-		var prefix1 = ctx + "system/userPeriod";
+		var prefix = ctx + "system/target";
+		var prefix1 = ctx + "system/periodTarget";
 
 		$(function() {
 		    var panehHidden = false;
@@ -46,11 +46,10 @@
 	    		};
 	    		$('#scroll-up').toTop(opt);
 	    	}
-		    queryUserList();
-		    // queryDeptTree();
+			queryTargetList();
 		});
 
-		function queryUserList() {
+		function queryTargetList() {
 		    var options = {
 		        url: prefix + "/list",
 				createUrl: prefix1 + "/addPeriod",
@@ -62,21 +61,18 @@
 				showSearch: false,//搜索按钮
 				showColumns: false,//列选择
 				pagination: false,
-		        columns: [{
-		            checkbox: true
-		        },
-		        {
-		            field: 'userId',
-		            title: '用户ID'
-		        },
-		        {
-		            field: 'userName',
-		            title: '用户名称'
-		        },
-		        {
-		            field: 'dept.deptName',
-		            title: '部门'
-		        },
+				columns: [{
+					checkbox: true
+				},
+					{
+						field: 'targetId',
+						title: '指标ID',
+						width: '10%'
+					},
+					{
+						field: 'content',
+						title: '内容'
+					}
 				]
 		    };
 		    $.table.init(options);
@@ -85,16 +81,9 @@
 		function submitHandler() {
 			var data = $.operate.addPeriodUser12();
 			console.log(data,"data");
-			$('#userIds').val(data.toString());
+			$('#targetIds').val(data.toString());
 			$.operate.save(prefix1 + "/add",  $('#form-periodUser-add').serialize());
-			// $.operate.get(prefix1 + "/add/"+data.toString());
 		}
-
-
-
-
-
-
 
 		$('#btnExpand').click(function() {
 			$._tree.expandAll(true);
@@ -107,6 +96,10 @@
 		    $(this).hide();
 		    $('#btnExpand').show();
 		});
+
+		// $('#btnRefresh').click(function() {
+		// 	queryDeptTree();
+		// });
 
 		/* 用户管理-部门 */
 		function dept() {

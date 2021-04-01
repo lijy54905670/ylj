@@ -15,4 +15,6 @@ public interface PeriodRepository extends BaseJpaRepository<SysPeriod,Long>{
     @Query(value = "select * from sys_period where parent_id != 0 and del_flag = '0'",nativeQuery = true)
     public List<SysPeriod> period();
 
+    @Query(value = "select * from sys_period where parent_id != 0 and del_flag = '0' and period_id = 1?",nativeQuery = true)
+    SysPeriod periodById(Long periodId);
 }

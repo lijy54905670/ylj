@@ -1,5 +1,6 @@
 package com.xinyuan.ms.service.impl;
 
+import com.xinyuan.ms.common.util.ReflectionUtils;
 import com.xinyuan.ms.entity.SysTarget;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.mapper.TargetRepository;
@@ -7,11 +8,9 @@ import com.xinyuan.ms.service.BaseService;
 import com.xinyuan.ms.web.request.TargetVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class TargetService extends BaseService<TargetRepository, SysTarget,Long> {
@@ -92,5 +91,36 @@ public class TargetService extends BaseService<TargetRepository, SysTarget,Long>
                 ztrees.add(ztree);
         }
         return ztrees;
+    }
+
+    /**
+     * 添加新指标
+     * @param sysTarget
+     * @return
+     */
+    public boolean addTarget(SysTarget sysTarget){
+        sysTarget.setDelFlag("0");
+        save(sysTarget);
+        if (sysTarget.getTargetId() != null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * 删除指标
+     */
+    public void remove(String ids){
+        List<Long> list = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
+        for (int i = 0; i < list.size(); i++) {
+            SysTarget entity = bizRepository.findOne(list.get(i));
+            if (entity != null) {
+                if (ReflectionUtils.hasField(entity, "delFlag")) {
+                    ReflectionUtils.invokeSetter(entity, "delFlag", "1");
+                }
+                bizRepository.save(entity);
+            }
+        }
     }
 }

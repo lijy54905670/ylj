@@ -11,8 +11,22 @@ import java.util.List;
 @Service
 public class SysPeriodTargetService extends BaseService<SysPeriodTargetRepository, SysPeriodTarget,Long> {
 
-
+    /**
+     * 添加周期指标
+     * @param sysPeriodTarget
+     * @return
+     */
     public boolean addPeriodTarget(SysPeriodTarget sysPeriodTarget){
+
+        if (sysPeriodTarget.getPeriodId() != null) {
+            Long periodId = sysPeriodTarget.getPeriodId();
+            List<SysPeriodTarget> sysPeriodTargetByPeriodId = getSysPeriodTargetByPeriodId(periodId);
+            if (sysPeriodTargetByPeriodId != null && sysPeriodTargetByPeriodId.size() != 0) {
+                SysPeriodTarget periodTarget = sysPeriodTargetByPeriodId.get(0);
+                sysPeriodTarget.setId(periodTarget.getId());
+                sysPeriodTarget.setTargetIds(sysPeriodTarget.getTargetIds() + "," + periodTarget.getTargetIds());
+            }
+        }
         SysPeriodTarget save = save(sysPeriodTarget);
         if (save != null){
             return true;
@@ -34,4 +48,14 @@ public class SysPeriodTargetService extends BaseService<SysPeriodTargetRepositor
             return null;
         }
     }
+
+    /**
+     * 通过周期id查询记录
+     * @return
+     */
+    public List<SysPeriodTarget> getSysPeriodTargetByPeriodId(Long periodId){
+        List<SysPeriodTarget> sysPeriodTargets = bizRepository.periodTarget(periodId);
+        return sysPeriodTargets;
+    }
+
 }

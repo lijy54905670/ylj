@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SysUserRepository extends BaseJpaRepository<SysUser,Long>{
 
@@ -16,11 +17,14 @@ public interface SysUserRepository extends BaseJpaRepository<SysUser,Long>{
      * 根据用户id查询用户信息
      * */
     @Query(value = "select * from sys_user where user_id = ?",nativeQuery = true)
-    public SysUser selectUserByid(Long id);
+    SysUser selectUserByid(Long id);
 
     /**
      * 根据登录名查询用户信息
      * */
     @Query(value = "select * from sys_user where login_name = ?",nativeQuery = true)
     public SysUser selectUserByName(String userName);
+
+    @Query(value = "select * from sys_user where user_id in :ids",nativeQuery = true)
+    List<SysUser> getUserByIds(@Param("ids") Set<Long> ids);
 }
