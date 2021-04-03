@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="include1 :: header('用户列表')" />
+	<th:block th:include="include1 :: layout-latest-css" />
+	<th:block th:include="include1 :: ztree-css" />
+</head>
+<body class="gray-bg">
+
+	<div class="ui-layout-center">
+		<div class="container-div">
+			<div class="row">
+		        <div class="col-sm-12 select-table table-striped">
+				    <table id="bootstrap-table" border="1px">
+
+					</table>
+
+					<form class="form-horizontal m" id="form-periodUser-add">
+						<input class="form-control" type="hidden" name="targetIds" id="targetIds">
+						<input class="form-control" type="hidden" name="periodId" th:value="${uId}">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="include1 :: footer" />
+	<th:block th:include="include1 :: layout-latest-js" />
+	<th:block th:include="include1 :: ztree-js" />
+	<script th:inline="javascript">
+		var editFlag = true;
+		var removeFlag = true;
+		var resetPwdFlag = true;
+		var prefix = ctx + "system/mark";
+		var prefix1 = ctx + "system/periodTarget";
+
+		$(function() {
+		    var panehHidden = false;
+		    if ($(this).width() < 769) {
+		        panehHidden = true;
+		    }
+		    $('body').layout({ initClosed: panehHidden, west__size: 185 });
+	     	// 回到顶部绑定
+	    	if ($.fn.toTop !== undefined) {
+	    		var opt = {
+	    			win:$('.ui-layout-center'),
+	    			doc:$('.ui-layout-center')
+	    		};
+	    		$('#scroll-up').toTop(opt);
+	    	}
+			queryTargetList();
+		});
+
+		function queryTargetList() {
+		    var options = {
+		        url: prefix + "/targetList",
+				createUrl: prefix1 + "/addPeriod",
+				updateUrl: prefix + "/edit/{id}",
+				removeUrl: prefix + "/remove",
+		        modalName: "用户",
+				showToggle: false,
+				showRefresh: false,//是否显示刷新按钮
+				showSearch: false,//搜索按钮
+				showColumns: false,//列选择
+				pagination: false,
+				columns: [
+					{
+						field: 'content',
+						title: '内容'
+					},
+					{
+						field: 'weight',
+						title: '权重'
+					},
+					{
+						field: 'score',
+						title: '分数(双击打分)',
+						border: 1
+					}
+				],
+				onClickCell: function(field, value, row, $element) {
+					console.log("onClickCell");
+					console.log(field,"hahahha");
+					if(field == 'score') {
+						$element.attr('contenteditable', true);
+						$element.blur(function () {
+							let index = $element.parent().data('index');
+							let tdValue = $element.html();
+							$.table.editCell(index, field, tdValue);
+						})
+					}
+					// setTimeout(function(){
+					// 	console.log((JSON.stringify($.table.getTableData("bootstrap-table"))));
+					// },5000);
+				}
+		    };
+		    $.table.init(options);
+		}
+
+		function submitHandler() {
+			$.operate.save(prefix + "/addMark",{"sysMarks":JSON.stringify($.table.getTableData("bootstrap-table"))});
+		}
+
+		$('#btnExpand').click(function() {
+			$._tree.expandAll(true);
+		    $(this).hide();
+		    $('#btnCollapse').show();
+		});
+
+		$('#btnCollapse').click(function() {
+			$._tree.expandAll(false);
+		    $(this).hide();
+		    $('#btnExpand').show();
+		});
+
+		// $('#btnRefresh').click(function() {
+		// 	queryDeptTree();
+		// });
+
+		/* 用户管理-部门 */
+		function dept() {
+			var url = ctx + "system/dept";
+			$.modal.openTab("部门管理", url);
+		}
+
+		/* 用户管理-重置密码 */
+		function resetPwd(userId) {
+		    var url = prefix + '/resetPwd/' + userId;
+		    $.modal.open("重置密码", url, '800', '300');
+		}
+
+		/* 用户管理-分配角色 */
+		function authRole(userId) {
+		    var url = prefix + '/authRole/' + userId;
+		    $.modal.openTab("用户分配角色", url);
+		}
+
+		/* 用户状态显示 */
+		function statusTools(row) {
+		    if (row.status == 1) {
+    			return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.userId + '\')"></i> ';
+    		} else {
+    			return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.userId + '\')"></i> ';
+    		}
+		}
+
+		/* 用户管理-停用 */
+		function disable(userId) {
+			$.modal.confirm("确认要停用用户吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "userId": userId, "status": 1 });
+		    })
+		}
+
+		/* 用户管理启用 */
+		function enable(userId) {
+			$.modal.confirm("确认要启用用户吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "userId": userId, "status": 0 });
+		    })
+		}
+	</script>
+</body>
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+<form enctype="multipart/form-data" class="mt20 mb10">
+	<div class="col-xs-offset-1">
+		<input type="file" id="file" name="file"/>
+		<div class="mt10 pt5">
+			<input type="checkbox" id="updateSupport" name="updateSupport" title="如果登录账户已经存在，更新这条数据。"> 是否更新已经存在的用户数据
+			 &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+		</div>
+		<font color="red" class="pull-left mt10">
+			提示：仅允许导入“xls”或“xlsx”格式文件！
+		</font>
+	</div>
+</form>
+</script>
+</html>

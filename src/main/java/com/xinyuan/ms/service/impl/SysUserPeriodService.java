@@ -1,16 +1,20 @@
 package com.xinyuan.ms.service.impl;
 
-import com.xinyuan.ms.entity.SysPeriod;
+import com.xinyuan.ms.common.util.EntityUtils;
+import com.xinyuan.ms.entity.SysDept;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.SysUserPeriod;
 import com.xinyuan.ms.mapper.SysUserPeriodRepository;
 import com.xinyuan.ms.service.BaseService;
 import com.xinyuan.ms.web.request.TargetVo;
+import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SysUserPeriodService extends BaseService<SysUserPeriodRepository,SysUserPeriod,Long> {
@@ -20,6 +24,13 @@ public class SysUserPeriodService extends BaseService<SysUserPeriodRepository,Sy
 
     @Autowired
     PeriodService periodService;
+
+
+    @Autowired
+    DeptServiceImpl deptService;
+
+    @Autowired
+    MarkService markService;
 
     /**
      * 保存userPeriod数据
@@ -53,15 +64,48 @@ public class SysUserPeriodService extends BaseService<SysUserPeriodRepository,Sy
     /**
      * 返回考评期间所有用户
      *
+     * @return
      */
-
-    public List<SysUser> periodUser(TargetVo targetVo){
+    public List<SysUserVo> periodUser(TargetVo targetVo){
         SysUserPeriod sysUserPeriod = bizRepository.selectUserPeriodById(targetVo.getPeriodId());
         List<SysUser> userByIds = new ArrayList<>();
+        List<SysUserVo> sysUserVos = new ArrayList<>();
         if (sysUserPeriod != null) {
-            userByIds = sysUserService.getUserByIds(sysUserPeriod.getUserIds());
+            Set<Long> exceptIds = markService.exceptIds(targetVo.periodId);
+            userByIds = sysUserService.getUserByIds(sysUserPeriod.getUserIds(),exceptIds);
+            for (int i = 0; i < userByIds.size(); i++) {
+                Long deptId= userByIds.get(i).getDeptId();
+                Double aDouble = markService.calculateScore(userByIds.get(i).getUserId());
+                SysDept sysDept = deptService.selectDeptByDeptId(deptId);
+                SysUserVo sysUserVo = new SysUserVo();
+                EntityUtils.copyPropertiesIgnoreNull(userByIds.get(i),sysUserVo);
+                sysUserVo.setDept(sysDept);
+                sysUserVo.setScore(aDouble);
+                sysUserVos.add(sysUserVo);
+            }
         }
-        return userByIds;
+        return sysUserVos;
+    }
+
+    public List<SysUserVo> periodUser2(TargetVo targetVo){
+        SysUserPeriod sysUserPeriod = bizRepository.selectUserPeriodById(targetVo.getPeriodId());
+        List<SysUser> userByIds = new ArrayList<>();
+        List<SysUserVo> sysUserVos = new ArrayList<>();
+        if (sysUserPeriod != null) {
+            Set<Long> exceptIds = markService.exceptIds(targetVo.periodId);
+            userByIds = sysUserService.getUserByIds(exceptIds.toString().replace("[","").replace("]","").replace(" ",""),new HashSet<>());
+            for (int i = 0; i < userByIds.size(); i++) {
+                Long deptId= userByIds.get(i).getDeptId();
+                Double aDouble = markService.calculateScore(userByIds.get(i).getUserId());
+                SysDept sysDept = deptService.selectDeptByDeptId(deptId);
+                SysUserVo sysUserVo = new SysUserVo();
+                EntityUtils.copyPropertiesIgnoreNull(userByIds.get(i),sysUserVo);
+                sysUserVo.setDept(sysDept);
+                sysUserVo.setScore(aDouble);
+                sysUserVos.add(sysUserVo);
+            }
+        }
+        return sysUserVos;
     }
 
 }

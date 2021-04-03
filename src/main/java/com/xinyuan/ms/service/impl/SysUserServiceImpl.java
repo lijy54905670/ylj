@@ -116,8 +116,9 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
     /**
      * 通过用户id集合查询用户
      */
-    public List<SysUser> getUserByIds(String ids){
+    public List<SysUser> getUserByIds(String ids,Set<Long> exceptIds){
         Set<Long> collect = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toSet());
+        boolean b = collect.removeAll(exceptIds);
         List<SysUser> userByIds = bizRepository.getUserByIds(collect);
         return userByIds;
     }

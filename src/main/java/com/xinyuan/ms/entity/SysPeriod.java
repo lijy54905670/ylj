@@ -1,6 +1,5 @@
 package com.xinyuan.ms.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

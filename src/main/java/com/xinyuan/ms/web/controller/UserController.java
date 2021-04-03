@@ -111,7 +111,6 @@ public class UserController extends BaseController{
         user.setPassword(encryptPassword(user.getPassword()));
         iSysUserService.updateId(user);
         return success();
-
 //        return error();
     }
 }

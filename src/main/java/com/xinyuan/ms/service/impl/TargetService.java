@@ -51,6 +51,10 @@ public class TargetService extends BaseService<TargetRepository, SysTarget,Long>
 
 
 
+    public List<SysTarget> targetList(Set<Long> ids){
+        List<SysTarget> sysTargets = bizRepository.targetList1("1", ids);
+        return sysTargets;
+    }
 
 
 
@@ -122,5 +126,13 @@ public class TargetService extends BaseService<TargetRepository, SysTarget,Long>
                 bizRepository.save(entity);
             }
         }
+    }
+
+    /**
+     * 通过id查找指标
+     */
+    public SysTarget getTargetById(Long tId){
+        SysTarget targetById = bizRepository.getTargetById(tId);
+        return targetById;
     }
 }

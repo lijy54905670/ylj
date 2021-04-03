@@ -43,7 +43,7 @@ public class SysUserPeriodController extends BaseController{
     @PostMapping("/periodUser")
     @ResponseBody
     public TableDataInfo periodUser(TargetVo targetVo){
-        List<SysUser> list = sysUserPeriodService.periodUser(targetVo);
+        List<SysUserVo> list = sysUserPeriodService.periodUser(targetVo);
         return getDataTable(list);
     }
 }

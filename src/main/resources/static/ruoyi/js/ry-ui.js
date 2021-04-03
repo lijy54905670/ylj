@@ -50,7 +50,7 @@ var table = {
                     pageList: [10, 25, 50],
                     toolbar: "toolbar",
                     loadingFontSize: 13,
-                    striped: false,
+                    striped: true,
                     escape: false,
                     firstLoad: true,
                     showFooter: false,
@@ -1190,6 +1190,7 @@ var table = {
             /*---------------------------------------------------------------------*/
             // 保存信息 刷新表格
             save: function(url, data, callback) {
+                console.log("save");
             	var config = {
         	        url: url,
         	        type: "post",

@@ -25,9 +25,31 @@ public class SysTarget {
 
     private String content;
 
+    private Integer weight;
+
     private Date createTime;
 
     private String delFlag;
+
+    @Override
+    public String toString() {
+        return "SysTarget{" +
+                "targetId=" + targetId +
+                ", parentId=" + parentId +
+                ", content='" + content + '\'' +
+                ", weight=" + weight +
+                ", createTime=" + createTime +
+                ", delFlag='" + delFlag + '\'' +
+                '}';
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
 
     public Long getTargetId() {
         return targetId;
