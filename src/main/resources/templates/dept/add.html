@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include1 :: header('新增部门')" />
+</head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-dept-add">
+			<input id="treeId" name="parentId" type="hidden" />
+			<div class="form-group">
+				<label class="col-sm-3 control-label">上级部门：</label>
+				<div class="col-sm-8">
+				    <div class="input-group">
+						<input class="form-control" type="text" onclick="selectDeptTree()" id="treeName" readonly="true" >
+					    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+				    </div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">部门名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="deptName" id="deptName" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">显示排序：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="orderNum" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">负责人：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="leader">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">联系电话：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="phone">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">邮箱：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="email">
+				</div>
+			</div>
+
+		</form>
+	</div>
+	<th:block th:include="include1 :: footer" />
+	<script type="text/javascript">
+		var prefix = ctx + "system/dept";
+
+
+		function submitHandler() {
+	        if ($.validate.form()) {
+	        	$.operate.save(prefix + "/add1", $('#form-dept-add').serialize());
+	        }
+	    }
+
+		/*部门管理-新增-选择父部门树*/
+		function selectDeptTree() {
+			var options = {
+				title: '部门选择',
+				width: "380",
+				url: prefix + "/selectDeptTree/" + 100,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var body = layer.getChildFrame('body', index);
+   			$("#treeId").val(body.find('#treeId').val());
+   			$("#treeName").val(body.find('#treeName').val());
+   			layer.close(index);
+		}
+	</script>
+</body>
+</html>

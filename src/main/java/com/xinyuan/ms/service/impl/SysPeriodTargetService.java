@@ -1,12 +1,19 @@
 package com.xinyuan.ms.service.impl;
 
 
+import com.xinyuan.ms.common.util.ReflectionUtils;
 import com.xinyuan.ms.entity.SysPeriodTarget;
+import com.xinyuan.ms.entity.SysUserPeriod;
+import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.mapper.SysPeriodTargetRepository;
 import com.xinyuan.ms.service.BaseService;
+import com.xinyuan.ms.web.request.RemoveRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SysPeriodTargetService extends BaseService<SysPeriodTargetRepository, SysPeriodTarget,Long> {
@@ -56,6 +63,22 @@ public class SysPeriodTargetService extends BaseService<SysPeriodTargetRepositor
     public List<SysPeriodTarget> getSysPeriodTargetByPeriodId(Long periodId){
         List<SysPeriodTarget> sysPeriodTargets = bizRepository.periodTarget(periodId);
         return sysPeriodTargets;
+    }
+
+
+    /**
+     * 删除考评指标
+     */
+    public boolean remove(RemoveRequest removeRequest) throws BaseException {
+        String[] split = removeRequest.getIds().replace("(", "").replace(")", "").split(",");
+        Set<String> collect1 = Arrays.stream(split).collect(Collectors.toSet());
+        List<SysPeriodTarget> sysPeriodTargets = bizRepository.periodTarget(removeRequest.getpId());
+        Set<String> collect = Arrays.stream(sysPeriodTargets.get(0).getTargetIds().split(",")).collect(Collectors.toSet());
+        boolean b = collect.removeAll(collect1);
+        sysPeriodTargets.get(0).setTargetIds(collect.toString().replace(" ","").replace("[","").replace("]",""));
+        save(sysPeriodTargets.get(0));
+        return b;
+
     }
 
 }

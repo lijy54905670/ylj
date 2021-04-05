@@ -1,6 +1,7 @@
 package com.xinyuan.ms.service.impl;
 
 import com.xinyuan.ms.common.constant.UserConstants;
+import com.xinyuan.ms.common.util.EntityUtils;
 import com.xinyuan.ms.entity.SysDept;
 import com.xinyuan.ms.entity.Ztree;
 import com.xinyuan.ms.mapper.DeptRepository;
@@ -70,4 +71,33 @@ public class DeptServiceImpl extends BaseService<DeptRepository, SysDept,Long> {
         }
         return ztrees;
     }
+
+
+    /**
+     * 添加部门
+     */
+    public void addDept(SysDept sysDept){
+        sysDept.setDelFlag("0");
+        save(sysDept);
+    }
+
+    /**
+     * 根据部门id查询部门详细信息
+     */
+    public SysDept getDeptById(Long id){
+        SysDept sysDept = bizRepository.selectDeptByDeptId(id);
+        return sysDept;
+    }
+
+    /**
+     * 更新部门
+     */
+    public void updateDept(SysDept sysDept){
+        SysDept one = bizRepository.findOne(sysDept.getDeptId());
+        if (one != null){
+            EntityUtils.copyPropertiesIgnoreNull(sysDept,one);
+            save(one);
+        }
+    }
+
 }

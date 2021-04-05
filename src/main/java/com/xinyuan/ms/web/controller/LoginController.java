@@ -127,6 +127,10 @@ public class LoginController extends BaseController{
         return "dept/tree";
     }
 
-
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("user");
+        return "login";
+    }
 
 }

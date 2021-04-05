@@ -63,7 +63,7 @@
                 <a class="btn btn-success disabled" onclick="$.operate.addPeriodUser($('#periodId').val())">
                     <i class="fa fa-plus"></i> 添加考评指标
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll123($('#periodId').val())">
                     <i class="fa fa-remove"></i> 删除
                 </a>
             </div>
@@ -85,6 +85,7 @@
     var resetPwdFlag = true;
     var prefix = ctx + "system/period";
     var prefix2 = ctx + "system/target";
+    var prefix3 = ctx + "system/periodTarget";
 
     $(function() {
         var panehHidden = false;
@@ -113,6 +114,7 @@
             createUrl: prefix2 + "/add/{id}",
             addPeriodUrl: prefix2 + "/addPeriod/{id}",
             addPeriodUserUrl: prefix + "/addPeriodTarget/{id}",
+            removeUrl: prefix3 + "/remove",
             pageSize: 100,
             clickToSelect: false,
             showToggle: false,

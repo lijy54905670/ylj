@@ -117,10 +117,22 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
      * 通过用户id集合查询用户
      */
     public List<SysUser> getUserByIds(String ids,Set<Long> exceptIds){
-        Set<Long> collect = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toSet());
-        boolean b = collect.removeAll(exceptIds);
-        List<SysUser> userByIds = bizRepository.getUserByIds(collect);
+        List<SysUser> userByIds = new ArrayList<>();
+        if (ids != null && !ids.trim().equals("")){
+            Set<Long> collect = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toSet());
+            boolean b = collect.removeAll(exceptIds);
+            userByIds = bizRepository.getUserByIds(collect);
+        }
         return userByIds;
+    }
+
+    /**
+     * 更新用户
+     */
+    public void updateUser(SysUser sysUser,HttpSession session){
+        SysUser user = (SysUser) session.getAttribute("user");
+        EntityUtils.copyPropertiesIgnoreNull(sysUser,user);
+        save(user);
     }
 
 }

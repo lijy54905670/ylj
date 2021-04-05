@@ -4,17 +4,17 @@ import com.xinyuan.ms.common.util.EntityUtils;
 import com.xinyuan.ms.entity.SysDept;
 import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.SysUserPeriod;
+import com.xinyuan.ms.exception.BaseException;
 import com.xinyuan.ms.mapper.SysUserPeriodRepository;
 import com.xinyuan.ms.service.BaseService;
+import com.xinyuan.ms.web.request.RemoveRequest;
 import com.xinyuan.ms.web.request.TargetVo;
 import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserPeriodService extends BaseService<SysUserPeriodRepository,SysUserPeriod,Long> {
@@ -106,6 +106,22 @@ public class SysUserPeriodService extends BaseService<SysUserPeriodRepository,Sy
             }
         }
         return sysUserVos;
+    }
+
+    /**
+     * 删除考评对象
+     * @return
+     */
+    public boolean remove(RemoveRequest removeRequest) throws BaseException {
+        String[] split = removeRequest.getIds().replace("(", "").replace(")", "").split(",");
+        Set<String> collect1 = Arrays.stream(split).collect(Collectors.toSet());
+        SysUserPeriod sysUserPeriod = bizRepository.selectUserPeriodById(removeRequest.getpId());
+        Set<String> collect = Arrays.stream(sysUserPeriod.getUserIds().split(",")).collect(Collectors.toSet());
+        boolean b = collect.removeAll(collect1);
+        sysUserPeriod.setUserIds(collect.toString().replace(" ","").replace("[","").replace("]",""));
+        save(sysUserPeriod);
+        return b;
+
     }
 
 }

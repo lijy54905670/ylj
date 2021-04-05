@@ -2,9 +2,9 @@ package com.xinyuan.ms.web.controller;
 
 import com.xinyuan.ms.common.core.page.TableDataInfo;
 import com.xinyuan.ms.common.entity.AjaxResult;
-import com.xinyuan.ms.entity.SysUser;
 import com.xinyuan.ms.entity.SysUserPeriod;
 import com.xinyuan.ms.service.impl.SysUserPeriodService;
+import com.xinyuan.ms.web.request.RemoveRequest;
 import com.xinyuan.ms.web.request.TargetVo;
 import com.xinyuan.ms.web.vo.SysUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +45,21 @@ public class SysUserPeriodController extends BaseController{
     public TableDataInfo periodUser(TargetVo targetVo){
         List<SysUserVo> list = sysUserPeriodService.periodUser(targetVo);
         return getDataTable(list);
+    }
+
+    /**
+     * 删除考评对象
+     * @return
+     */
+    @RequestMapping("/remove")
+    @ResponseBody
+    public AjaxResult remove(RemoveRequest removeRequest){
+        boolean remove = sysUserPeriodService.remove(removeRequest);
+        if (remove){
+            return toAjax(1);
+        }else {
+            return AjaxResult.error("删除失败");
+        }
+
     }
 }

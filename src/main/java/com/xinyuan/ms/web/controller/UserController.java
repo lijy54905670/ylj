@@ -12,6 +12,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 import static com.xinyuan.ms.common.entity.AjaxResult.error;
 
 /**
@@ -112,5 +114,22 @@ public class UserController extends BaseController{
         iSysUserService.updateId(user);
         return success();
 //        return error();
+    }
+
+    @RequestMapping("/profile/update")
+    @ResponseBody
+    public AjaxResult updateInfo(SysUser sysUser, HttpSession session){
+        iSysUserService.updateUser(sysUser,session);
+        return toAjax(1);
+
+    }
+
+    @RequestMapping("/profile/resetPwd")
+    @ResponseBody
+    public AjaxResult restpwd(String newPassword, HttpSession session){
+        SysUser user = (SysUser) session.getAttribute("user");
+        user.setPassword(encryptPassword(newPassword));
+        iSysUserService.updateId(user);
+        return success();
     }
 }

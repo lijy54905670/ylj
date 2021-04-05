@@ -1043,6 +1043,25 @@ var table = {
             	});
             },
 
+            // 批量删除信息
+            removeAll123: function(pId) {
+                alert(pId);
+                table.set();
+                var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+                console.log(rows)
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                $.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
+                    var url = table.options.removeUrl;
+                    var data = { "ids": rows.join(),
+                                "pId": pId
+                    };
+                    $.operate.submit(url, "post", "json", data);
+                });
+            },
+
             // 清空信息
             clean: function() {
             	table.set();

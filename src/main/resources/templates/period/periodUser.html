@@ -18,7 +18,7 @@
     <div class="box box-main">
         <div class="box-header">
             <div class="box-title">
-                <i class="fa icon-grid"></i> 考评期间管理
+                <i class="fa icon-grid"></i> 考评期间
             </div>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" id="btnExpand" title="展开" style="display:none;"><i class="fa fa-chevron-up"></i></button>
@@ -64,7 +64,7 @@
                 <a class="btn btn-success disabled" onclick="$.operate.addPeriodUser($('#periodId1').val())">
                     <i class="fa fa-plus"></i> 添加考评对象
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll123($('#periodId1').val())">
                     <i class="fa fa-remove"></i> 删除
                 </a>
             </div>
@@ -114,6 +114,7 @@
         var options = {
             url: prefix3 + "/periodUser",
             addPeriodUserUrl: prefix + "/addPeriodUser/{id}",
+            removeUrl: prefix3 + "/remove",
             modalName: "指标",
             showRefresh: false,  //是否显示刷新按钮
             clickToSelect: false,

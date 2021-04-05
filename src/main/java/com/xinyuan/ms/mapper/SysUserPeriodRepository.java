@@ -8,7 +8,7 @@ public interface SysUserPeriodRepository extends BaseJpaRepository<SysUserPeriod
 
 
     @Query(value = "select * from sys_user_period where period_id = ?",nativeQuery = true)
-    public SysUserPeriod selectUserPeriodById(Long id);
+    SysUserPeriod selectUserPeriodById(Long id);
 
 
 }
