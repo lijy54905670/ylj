@@ -27,4 +27,18 @@ public interface SysUserRepository extends BaseJpaRepository<SysUser,Long>{
 
     @Query(value = "select * from sys_user where user_id in :ids",nativeQuery = true)
     List<SysUser> getUserByIds(@Param("ids") Set<Long> ids);
+
+    /**
+     * 通过权限id连接查询用户信息
+     */
+    @Query(value = "select * from sys_user su left join sys_user_role sur on su.user_id = sur.user_id where sur.role_id = ?",nativeQuery = true)
+    List<SysUser> allocatedList(Long rId);
+
+    /**
+     * 查询还没有添加权限用户
+     */
+    @Query(value = "select su.* from sys_user su where su.user_id not in (\n" +
+            "\tselect user_id from sys_user_role sur where sur.role_id = ?  \n" +
+            ");",nativeQuery = true)
+    List<SysUser> unallocatedList(Long rId);
 }

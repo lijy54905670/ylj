@@ -135,4 +135,19 @@ public class SysUserServiceImpl extends BaseService<SysUserRepository, SysUser,L
         save(user);
     }
 
+    /**
+     * 通过权限id查询用户详细信息
+     * @return
+     */
+    public List<SysUser> allocatedList(Long rId){
+        List<SysUser> sysUsers = bizRepository.allocatedList(rId);
+        return sysUsers;
+    }
+
+    /**
+     * 查询还没有添加权限用户
+     */
+    public List<SysUser> unAllocateList(Long rId){
+        return bizRepository.unallocatedList(rId);
+    }
 }

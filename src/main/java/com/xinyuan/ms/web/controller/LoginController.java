@@ -47,7 +47,8 @@ public class LoginController extends BaseController{
     @ResponseBody
     public AjaxResult login(String username, String password, Model model, HttpSession session){
         if ( sysUserService.login(username, password,session,model)){
-            List<SysMenuVo> menus = iSysMenuService.selectMenuAll(1l);
+            SysUser user = (SysUser) session.getAttribute("user");
+            List<SysMenuVo> menus = iSysMenuService.selectMenuAll(user.getUserId());
             model.addAttribute("menus",menus);
             return success();
         }else {
@@ -62,8 +63,9 @@ public class LoginController extends BaseController{
      * @return
      */
     @RequestMapping("/index")
-    public String index(Model model){
-        List<SysMenuVo> menus = iSysMenuService.selectMenuAll(1l);
+    public String index(Model model,HttpSession session){
+        SysUser user = (SysUser) session.getAttribute("user");
+        List<SysMenuVo> menus = iSysMenuService.selectMenuAll(user.getUserId());
         model.addAttribute("menus",menus);
         return "index1";
     }
