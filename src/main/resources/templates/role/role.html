@@ -32,18 +32,14 @@
 <!--			</div>-->
 
 			<div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:role:add">
+				<a class="btn btn-success" onclick="$.operate.add()" >
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-	            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:role:edit">
+	            <a class="btn btn-primary single disabled" onclick="$.operate.edit()">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:role:remove">
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
 		            <i class="fa fa-remove"></i> 删除
-		        </a>
-<!--		        <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:role:export">-->
-<!--		            <i class="fa fa-download"></i> 导出-->
-<!--		        </a>-->
 	        </div>
 
 	        <div class="col-sm-12 select-table table-striped">
@@ -68,7 +64,7 @@
 				showSearch: false,//搜索按钮
 				showColumns: false,//列选择
 		        sortName: "roleSort",
-		        modalName: "角色",
+		        modalName: "权限",
 		        columns: [{
 		            checkbox: true
 		        },

@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 
 <head>
-    <th:block th:include="include1 :: header('用户列表')" />
+    <th:block th:include="include1 :: header('打分详细列表')" />
     <th:block th:include="include1 :: layout-latest-css" />
     <th:block th:include="include1 :: ztree-css" />
 </head>
@@ -74,7 +74,7 @@
             updateUrl: prefixMark + "/mark/{id}",
             removeUrl: prefixMark + "/remove",
             detailUrl: prefixMark + "/detail/{id}",
-            modalName: "用户",
+            modalName: "打分",
             showToggle: false,
             showRefresh: false,//是否显示刷新按钮
             showSearch: false,//搜索按钮
